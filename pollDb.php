@@ -26,9 +26,9 @@ class PollDb {
 
         for($i=0; $i<count($answerOptions); $i++){
            $command = $db->createCommand()->insert('poll_response', [
+            'answers'   => $answerOptions[$i],
             'poll_name' => $pollName,
-            'answers' => $answerOptions[$i],
-            'value' => 0
+            'value'     => 0,
             ])->execute(); 
         }
     }
@@ -47,7 +47,7 @@ class PollDb {
             ;
             /*if(array_search(Yii::$app->user->getId(),$ids)==false){
                 
-            }else{
+            } else {
                 return false;
             }
             */
@@ -65,7 +65,7 @@ class PollDb {
         $userId;
         if(Yii::$app->user->getId()==null){
             $userId = 0;
-        }else{
+        } else {
             $userId = Yii::$app->user->getId(); 
         }
         $pollData = $command->queryOne();
@@ -83,7 +83,7 @@ class PollDb {
         $userId;
         if(Yii::$app->user->getId()== null){
             $userId = 0;
-        }else{
+        } else {
             $userId = Yii::$app->user->getId(); 
         }
         $db = Yii::$app->db;
@@ -92,8 +92,10 @@ class PollDb {
         $result = $command->queryOne();
         
         if($result == null){
+
             return false;
-        }else{
+        } else {
+
             return true;
         }
     }
@@ -101,40 +103,41 @@ class PollDb {
     public function createTables() {
         $db = Yii::$app->db;
         $command_1 = $db->createCommand("
-                    CREATE TABLE IF NOT EXISTS `poll_user` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `poll_id` int(11) NOT NULL,
-                    `user_id` int(11) NOT NULL,
-                    PRIMARY KEY (`id`),
-                    KEY `poll_id` (`poll_id`)
-                    ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-                    )->execute();
+            CREATE TABLE IF NOT EXISTS `poll_user` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `poll_id` int(11) NOT NULL,
+            `user_id` int(11) NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `poll_id` (`poll_id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
+        )->execute();
                     
         $command_2 = $db->createCommand("
-                    CREATE TABLE IF NOT EXISTS `polls` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `poll_name` varchar(500) NOT NULL,
-                    `answer_options` text NOT NULL,
-                    PRIMARY KEY (`id`),
-                    KEY `poll_name` (`poll_name`(255))
-                    ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-                    )->execute();
+            CREATE TABLE IF NOT EXISTS `polls` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `poll_name` varchar(500) NOT NULL,
+            `answer_options` text NOT NULL,
+            PRIMARY KEY (`id`),
+            KEY `poll_name` (`poll_name`(255))
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
+        )->execute();
        
        $command_3 = $db->createCommand("
-                    CREATE TABLE IF NOT EXISTS `poll_response` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `poll_name` varchar(500) NOT NULL,
-                    `answers` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
-                    `value` int(11) NOT NULL,
-                    PRIMARY KEY (`id`)
-                    ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-                    )->execute(); 
+            CREATE TABLE IF NOT EXISTS `poll_response` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `poll_name` varchar(500) NOT NULL,
+            `answers` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+            `value` int(11) NOT NULL,
+            PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
+        )->execute(); 
     }
 
     public function isTableExists() {
-        $db = Yii::$app->db;
+        $db      = Yii::$app->db;
         $command = $db->createCommand("SHOW TABLES LIKE 'polls'");
-        $res = $command->queryAll();
+        $res     = $command->queryAll();
+
         return $res;
     }
 }

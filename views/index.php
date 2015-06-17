@@ -123,7 +123,7 @@ use yii\widgets\ActiveForm;
                     $voicesPer = 0;
                     if($sumOfVoices ==0){
                         $voicesPer = 0;
-                    }else{
+                    } else {
                         $voicesPer = round($answersData[$i]['value']/$sumOfVoices, 4);
                     }
                     
