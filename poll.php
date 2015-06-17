@@ -1,6 +1,6 @@
 <?php
 
-namespace pollext\poll;
+namespace davidjeddy\yii2poll;
 
 use yii;
 use yii\base\Widget;
