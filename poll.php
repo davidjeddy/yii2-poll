@@ -33,7 +33,7 @@ class Poll extends Widget {
         
             $db = Yii::$app->db;
             
-            $command = $db->createCommand('SELECT * FROM poll_questions WHERE poll_name=:pollName')->
+            $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
             bindParam(':pollName',$this->pollName);
             
             $this->pollData = $command->queryOne();
@@ -41,7 +41,7 @@ class Poll extends Widget {
     }
     
     private function setDbData() {
-        return Yii::$app->db->createCommand()->insert('poll_questions', [
+        return Yii::$app->db->createCommand()->insert('poll_question', [
             'answer_options' => $this->answerOptionsData,
             'poll_name'      => $this->pollName,
         ])->execute();

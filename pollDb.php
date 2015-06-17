@@ -8,7 +8,7 @@ class PollDb {
 
     public function isPollExist($pollName) {
         $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_questions WHERE poll_name=:pollName')->
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
         bindParam(':pollName',$pollName);
 
         $pollData = $command->queryOne();
@@ -62,7 +62,7 @@ class PollDb {
 
     public function updateUsers($pollName) {
         $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_questions WHERE poll_name=:pollName')->
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
         bindParam(':pollName',$pollName);
         $userId;
         if(Yii::$app->user->getId()==null){
@@ -79,7 +79,7 @@ class PollDb {
 
     public  function isVote($pollName) {
         $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_questions WHERE poll_name=:pollName')->
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
         bindParam(':pollName',$pollName);
         $pollData = $command->queryOne();
         $userId;
@@ -115,7 +115,7 @@ class PollDb {
         )->execute();
                     
         $command_2 = $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `poll_questions` (
+            CREATE TABLE IF NOT EXISTS `poll_question` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `poll_name` varchar(500) NOT NULL,
             `answer_options` text NOT NULL,
@@ -137,7 +137,7 @@ class PollDb {
 
     public function isTableExists() {
         $db      = Yii::$app->db;
-        $command = $db->createCommand("SHOW TABLES LIKE 'poll_questions'");
+        $command = $db->createCommand("SHOW TABLES LIKE 'poll_question'");
         $res     = $command->queryAll();
 
         return $res;
