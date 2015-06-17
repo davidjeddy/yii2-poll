@@ -11,7 +11,7 @@ class Poll extends Widget {
     private $answerOptionsData;
     private $params = array(
         'backgroundLinesColor' => '#D3D3D3',
-        'linesColor'           => '#4F9BC7'
+        'linesColor'           => '#4F9BC7',
         'linesHeight'          => 15,
         'maxLineWidth'         => 300,
     );
@@ -41,13 +41,10 @@ class Poll extends Widget {
     }
     
     private function setDbData() {
-        
-            $db = Yii::$app->db;
-            
-            $c = $db->createCommand()->insert('polls', [
-                'poll_name' => $this->pollName,
-                'answer_options' => $this->answerOptionsData
-            ])->execute();
+        return Yii::$app->db->createCommand()->insert('poll_questions', [
+            'answer_options' => $this->answerOptionsData,
+            'poll_name'      => $this->pollName,
+        ])->execute();
     }
     
     public function setParams($params) {
@@ -66,6 +63,7 @@ class Poll extends Widget {
         
         $pollDB = new PollDb;
         $this->isExist = $pollDB->isTableExists();
+
         if(count($this->isExist)==0){
             $pollDB->createTables();
         }

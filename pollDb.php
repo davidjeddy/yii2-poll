@@ -13,9 +13,11 @@ class PollDb {
 
         $pollData = $command->queryOne();
 
-        if($pollData==null){
+        if ($pollData==null) {
+
             return false;
-        }else {
+        } else {
+
             return true;
         }
     }
@@ -113,7 +115,7 @@ class PollDb {
         )->execute();
                     
         $command_2 = $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `polls` (
+            CREATE TABLE IF NOT EXISTS `poll_questions` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `poll_name` varchar(500) NOT NULL,
             `answer_options` text NOT NULL,
@@ -135,7 +137,7 @@ class PollDb {
 
     public function isTableExists() {
         $db      = Yii::$app->db;
-        $command = $db->createCommand("SHOW TABLES LIKE 'polls'");
+        $command = $db->createCommand("SHOW TABLES LIKE 'poll_questions'");
         $res     = $command->queryAll();
 
         return $res;

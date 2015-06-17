@@ -1,5 +1,5 @@
 <?php
-use pollext\poll\AjaxSubmitButton;
+use davidjeddy\yii2poll\AjaxSubmitButton;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
