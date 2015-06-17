@@ -1,8 +1,11 @@
 <?php
-namespace pollext\poll;
+
+namespace davidjeddy\yii2poll;
+
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
+
 /**
  * AjaxSubmitButton renders an ajax button which is very similar to ajaxSubmitButton from Yii1.
  *
@@ -41,8 +44,8 @@ use yii\helpers\Json;
  *
  * @author Oleg Martemjanov <demogorgorn@gmail.com>
  */
-class AjaxSubmitButton extends Widget
-{
+class AjaxSubmitButton extends Widget {
+
     public $ajaxOptions = [];
     /**
 	 * @var array the HTML attributes for the widget container tag.
@@ -60,26 +63,26 @@ class AjaxSubmitButton extends Widget
 	 * @var boolean whether the label should be HTML-encoded.
 	 */
 	public $encodeLabel = true;
-	/**
+
+    /**
 	 * Initializes the widget.
 	 */
-	public function init()
-	{
+	public function init() {
 		parent::init();
 		if (!isset($this->options['id'])) {
 			$this->options['id'] = $this->getId();
 		}
 	}
-    public function run()
-    {
+
+    public function run() {
     	parent::run();
     	echo Html::tag($this->tagName, $this->encodeLabel ? Html::encode($this->label) : $this->label, $this->options);
         
         if (!empty($this->ajaxOptions))
             $this->registerAjaxScript();
     }
-    protected function registerAjaxScript()
-    {
+
+    protected function registerAjaxScript() {
         $view = $this->getView();
         if(!isset($this->ajaxOptions['type'])) {
             $this->ajaxOptions['type'] = new \yii\web\JsExpression('$(this).parents("form").attr("method")');
