@@ -7,22 +7,22 @@ use yii\base\Widget;
 use yii\helpers\Html;
 
 class Poll extends Widget {
-    
-    private $answerOptionsData;
-    private $params = array(
+
+    public $answerOptions =array();
+    public $answerOptionsData;
+    public $answers       = array();
+    public $isExist;
+    public $isVote;
+    public $params = array(
         'backgroundLinesColor' => '#D3D3D3',
         'linesColor'           => '#4F9BC7',
         'linesHeight'          => 15,
         'maxLineWidth'         => 300,
     );
-    private $pollData;
-    private $pollName     ='';
-    private $usersIPs     = array();
-    public $answerOptions =array();
-    public $answers       = array();
-    public $isExist;
-    public $isVote;
+    public $pollData;
+    public $pollName      ='';
     public $sumOfVoices   = 0;
+    public $usersIPs      = array();
     
     public function setPollName($name) {
 
@@ -40,7 +40,7 @@ class Poll extends Widget {
             $this->answerOptionsData = unserialize($this->pollData['answer_options']);
     }
     
-    private function setDbData() {
+    public function setDbData() {
         return Yii::$app->db->createCommand()->insert('poll_question', [
             'answer_options' => $this->answerOptionsData,
             'poll_name'      => $this->pollName,
@@ -70,10 +70,15 @@ class Poll extends Widget {
         if($this->answerOptions != null){
             $this->answerOptionsData = serialize($this->answerOptions);
         }
+
+        // crate DB TBOs if they do not exist for this poll
         if(!$pollDB->isPollExist($this->pollName)){
             $this->setDbData();
-            $pollDB->setVoicesData($this->pollName, $this->answerOptions);
         }
+
+        // check that all Poll answers exist
+        $pollDB->pollAnswerOptions($this);
+
         if(Yii::$app->request->isAjax){
             if(isset($_POST['VoicesOfPoll'])){
                 if($_POST['poll_name']==$this->pollName){
