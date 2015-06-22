@@ -106,9 +106,12 @@ class PollDb {
         $db = Yii::$app->db;
         $command_1 = $db->createCommand("
             CREATE TABLE IF NOT EXISTS `poll_user` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `poll_id` int(11) NOT NULL,
-            `user_id` int(11) NOT NULL,
+            `id`            int(11) NOT NULL AUTO_INCREMENT,
+            `poll_id`       int(11) NOT NULL,
+            `user_id`       int(11) NOT NULL,
+            'created_at'    int(11) NOT NULL,
+            'created_at'    int(11) NULL,
+            'created_at'    int(11) NULL,
             PRIMARY KEY (`id`),
             KEY `poll_id` (`poll_id`)
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
@@ -116,9 +119,12 @@ class PollDb {
                     
         $command_2 = $db->createCommand("
             CREATE TABLE IF NOT EXISTS `poll_question` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `poll_name` varchar(500) NOT NULL,
-            `answer_options` text NOT NULL,
+            `id`            int(11) NOT NULL AUTO_INCREMENT,
+            `poll_name`     varchar(500) NOT NULL,
+            `answer_options`text NOT NULL,
+            'created_at'    int(11) NOT NULL,
+            'created_at'    int(11) NULL,
+            'created_at'    int(11) NULL,
             PRIMARY KEY (`id`),
             KEY `poll_name` (`poll_name`(255))
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
@@ -126,11 +132,15 @@ class PollDb {
        
        $command_3 = $db->createCommand("
             CREATE TABLE IF NOT EXISTS `poll_response` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `poll_name` varchar(500) NOT NULL,
-            `answers` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
-            `value` int(11) NOT NULL,
-            PRIMARY KEY (`id`)
+            `id`            int(11) NOT NULL AUTO_INCREMENT,
+            `poll_name`     varchar(500) NOT NULL,
+            `answers`       varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+            `value`         int(11) NOT NULL,
+            'created_at'    int(11) NOT NULL,
+            'created_at'    int(11) NULL,
+            'created_at'    int(11) NULL,
+            PRIMARY KEY (`id`),
+            KEY `poll_name` (`poll_name`(255))
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
         )->execute(); 
     }
