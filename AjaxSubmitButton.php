@@ -24,29 +24,38 @@ use yii\helpers\Json;
  *       ]
  *   ]);?>
  *
- * <?php AjaxSubmitButton::begin([
- *       'label'=>'Проверить',
- *       'ajaxOptions'=>
- *           [
- *               'type'=>'POST',
- *               'url'=>'country/getinfo',
- *               'cache' => false,
- *               'success' => new \yii\web\JsExpression('function(html){
- *                   $("#output").html(html);
- *               }'),
- *           ],
- *           'options' => ['type' => 'submit'],
- *       ]);
- *  AjaxSubmitButton::end();?>
+ * <?php
+ * AjaxSubmitButton::begin([
+ *     'label'       =>'Poll 1',
+ *     'ajaxOptions' =>
+ *        [
+ *            'cache'   => false,
+ *            'success' => new \yii\web\JsExpression('function(html){ $("#output").html(html); }'),
+ *            'type'    =>'POST',
+ *            'url'     =>'country/getinfo',
+ *        ],
+ *     'options' => ['type' => 'submit'],
+ * ]);
+ * AjaxSubmitButton::end();
+ * ?>
  *
  * <?= Html::endForm(); ?>
  * ```
  *
- * @author Oleg Martemjanov <demogorgorn@gmail.com>
+ * @author Oleg Martemjanov <demogorgorn@gmail.com>, David J Eddy <me@davidjeddy.com>
  */
 class AjaxSubmitButton extends Widget {
 
+    /**
+     * [$ajaxOptions description]
+     * @var array
+     */
     public $ajaxOptions = [];
+    /**
+     * [$ajaxOverride description]
+     * @var array
+     */
+    public $ajaxOverride= [];
     /**
 	 * @var array the HTML attributes for the widget container tag.
 	 */
@@ -110,5 +119,10 @@ class AjaxSubmitButton extends Widget {
                 });"
             );
         }
+
+echo '<pre>';
+print_r( $this->ajaxOptions );
+echo '</pre>';
+
     }
 }

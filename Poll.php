@@ -23,6 +23,9 @@ class Poll extends Widget {
     public $pollName      ='';
     public $sumOfVoices   = 0;
     
+    // experiemental ajax success override
+    public $ajaxSuccess   = [];
+
     public function setPollName($name) {
 
         $this->pollName = $name;
@@ -99,14 +102,16 @@ class Poll extends Widget {
     
     public function run() {
         $model = new VoicesOfPoll;
-        return  $this->render('index', [
-            'pollData'=> $this->pollData,
+
+        return $this->render('index', [
+            'ajaxSuccess' => $this->ajaxSuccess,
+            'answers'     => $this->answerOptions,
             'answersData' => $this->answers,
-            'params' => $this->params,
-            'model' => $model,
-            'answers' => $this->answerOptions,
+            'isVote'      => $this->isVote,
+            'model'       => $model,
+            'params'      => $this->params,
+            'pollData'    => $this->pollData,
             'sumOfVoices' => $this->sumOfVoices,
-            'isVote' => $this->isVote,
         ]);
     }
 }
