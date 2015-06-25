@@ -156,7 +156,9 @@ use yii\widgets\ActiveForm;
             && $_POST['pollStatus']=='show'
     )) {
         for($i = 0; $i<count($answersData); $i++){ 
-            $lineWidth = $params['maxLineWidth'] * ($sumOfVoices == 0) ?: round($answersData[$i]['value']/$sumOfVoices, 4); ?>
+            $voicesPer = $params['maxLineWidth'] * ($sumOfVoices == 0) ?: round($answersData[$i]['value'] / $sumOfVoices, 4);                   
+            $lineWidth = $params['maxLineWidth'] * $voicesPer;
+            ?>
             <div class="single-line" style="margin-bottom: 10px; ">
                 <?php echo "<div class=\"poll-option-name\">".$answersData[$i]['answers'].": ".$answersData[$i]['value']."</div>"; ?>
                 <div style="width: <?php echo $params['maxLineWidth']; ?>px;  height: <?php echo $params['linesHeight']; ?>px; background-color: <?php echo $params['backgroundLinesColor']; ?>; ">
