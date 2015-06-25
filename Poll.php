@@ -8,9 +8,9 @@ use yii\helpers\Html;
 
 class Poll extends Widget {
 
-    public $answerOptions =array();
+    public $answerOptions = [];
     public $answerOptionsData;
-    public $answers       = array();
+    public $answers       = [];
     public $isExist;
     public $isVote;
     public $params = array(
@@ -22,7 +22,6 @@ class Poll extends Widget {
     public $pollData;
     public $pollName      ='';
     public $sumOfVoices   = 0;
-    public $usersIPs      = array();
     
     public function setPollName($name) {
 
