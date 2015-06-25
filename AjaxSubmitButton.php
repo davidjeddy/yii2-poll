@@ -119,10 +119,5 @@ class AjaxSubmitButton extends Widget {
                 });"
             );
         }
-
-echo '<pre>';
-print_r( $this->ajaxOptions );
-echo '</pre>';
-
     }
 }
