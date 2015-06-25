@@ -52,8 +52,9 @@ class PollDb {
      */
     public function pollAnswerOptions($pollObj)
     {
+        $db = Yii::$app->db;
+
         foreach ($pollObj->answerOptions as $key => $value) {
-            $db = Yii::$app->db;
 
             $answer = $db->createCommand('
                 SELECT `answers`
