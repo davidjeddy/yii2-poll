@@ -24,29 +24,38 @@ use yii\helpers\Json;
  *       ]
  *   ]);?>
  *
- * <?php AjaxSubmitButton::begin([
- *       'label'=>'Проверить',
- *       'ajaxOptions'=>
- *           [
- *               'type'=>'POST',
- *               'url'=>'country/getinfo',
- *               'cache' => false,
- *               'success' => new \yii\web\JsExpression('function(html){
- *                   $("#output").html(html);
- *               }'),
- *           ],
- *           'options' => ['type' => 'submit'],
- *       ]);
- *  AjaxSubmitButton::end();?>
+ * <?php
+ * AjaxSubmitButton::begin([
+ *     'label'       =>'Poll 1',
+ *     'ajaxOptions' =>
+ *        [
+ *            'cache'   => false,
+ *            'success' => new \yii\web\JsExpression('function(html){ $("#output").html(html); }'),
+ *            'type'    =>'POST',
+ *            'url'     =>'country/getinfo',
+ *        ],
+ *     'options' => ['type' => 'submit'],
+ * ]);
+ * AjaxSubmitButton::end();
+ * ?>
  *
  * <?= Html::endForm(); ?>
  * ```
  *
- * @author Oleg Martemjanov <demogorgorn@gmail.com>
+ * @author Oleg Martemjanov <demogorgorn@gmail.com>, David J Eddy <me@davidjeddy.com>
  */
 class AjaxSubmitButton extends Widget {
 
+    /**
+     * [$ajaxOptions description]
+     * @var array
+     */
     public $ajaxOptions = [];
+    /**
+     * [$ajaxOverride description]
+     * @var array
+     */
+    public $ajaxOverride= [];
     /**
 	 * @var array the HTML attributes for the widget container tag.
 	 */
@@ -69,33 +78,51 @@ class AjaxSubmitButton extends Widget {
 	 */
 	public function init() {
 		parent::init();
+
 		if (!isset($this->options['id'])) {
+
 			$this->options['id'] = $this->getId();
 		}
 	}
 
     public function run() {
     	parent::run();
+
     	echo Html::tag($this->tagName, $this->encodeLabel ? Html::encode($this->label) : $this->label, $this->options);
         
-        if (!empty($this->ajaxOptions))
+        if (!empty($this->ajaxOptions)) {
+
             $this->registerAjaxScript();
+        }
     }
 
     protected function registerAjaxScript() {
         $view = $this->getView();
-        if(!isset($this->ajaxOptions['type'])) {
+
+        if (!isset($this->ajaxOptions['type'])) {
+
             $this->ajaxOptions['type'] = new \yii\web\JsExpression('$(this).parents("form").attr("method")');
         }
-        if(!isset($this->ajaxOptions['url'])) {
+
+        if (!isset($this->ajaxOptions['url'])) {
+
             $this->ajaxOptions['url'] = new \yii\web\JsExpression('$(this).parents("form").attr("action")');
         }
-        if(!isset($this->ajaxOptions['data']) && isset($this->ajaxOptions['type']))
+
+        if (!isset($this->ajaxOptions['data']) && isset($this->ajaxOptions['type'])) {
             $this->ajaxOptions['data'] = new \yii\web\JsExpression('$(this).parents("form").serialize()');
-        $this->ajaxOptions= Json::encode($this->ajaxOptions);
-        $view->registerJs("$( '#".$this->options['id']."' ).click(function() {
-                $.ajax(". $this->ajaxOptions ."); 
-                return false;
-            });");
+            $this->ajaxOptions= Json::encode($this->ajaxOptions);
+
+            $view->registerJs("$( '#".$this->options['id']."' ).click(function() {
+                    $.ajax(". $this->ajaxOptions .");
+                    return false;
+                });"
+            );
+        }
+
+echo '<pre>';
+print_r( $this->ajaxOptions );
+echo '</pre>';
+
     }
 }

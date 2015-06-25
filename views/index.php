@@ -88,32 +88,31 @@ use yii\widgets\ActiveForm;
 
 
 
-    // 
+    // Init poll VW. No answer submitted / found in DB
     if ((
         $isVote == false
         && Yii::$app->user->getId()!=null
         && $_POST['pollStatus']!='show'
     ) || (
-        $_POST['nameOfPoll']==$pollData['poll_name']
-        && $_POST['pollStatus']=='vote'
-        && $_POST['pollStatus']!='show'
-        && Yii::$app->user->getId()!=null
+        $_POST['nameOfPoll']        == $pollData['poll_name']
+        && $_POST['pollStatus']     != 'show'
+        && $_POST['pollStatus']     == 'vote'
+        && Yii::$app->user->getId() != null
     )) {
         echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
-        echo Html::activeRadioList($model,'voice',$answers);
-        echo '<input type="hidden" name="poll_name" value="'.$pollData['poll_name'].'"/>';
+            echo Html::activeRadioList($model,'voice',$answers);
+            echo '<input type="hidden" name="poll_name" value="'.$pollData['poll_name'].'"/>';
 
-        AjaxSubmitButton::begin([
-            'label' => 'Vote',
-            'ajaxOptions' => [
-                'success' => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
-                'type'    => 'POST',
-                'url'     => '#',
-            ],
-            'options' => ['class' => 'customclass', 'type' => 'submit'],
-        ]);
-        AjaxSubmitButton::end();
-
+            AjaxSubmitButton::begin([
+                'label' => 'Vote',
+                'ajaxOptions' => [
+                    'success' => (($ajaxSuccess) ?: new \yii\web\JsExpression('function(data){ $("body").html(data); }')),
+                    'type'    => 'POST',
+                    'url'     => '#',
+                ],
+                'options' => ['class' => 'customclass', 'type' => 'submit'],
+            ]);
+            AjaxSubmitButton::end();
         echo Html::endForm(); 
     }
 
@@ -180,11 +179,11 @@ use yii\widgets\ActiveForm;
                 AjaxSubmitButton::begin([
                 'label' => 'Vote',
                 'ajaxOptions' => [
-                    'success' => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
-                    'type'    => 'POST',
-                    'url'     => '#',
+                    'success'  => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
+                    'type'     => 'POST',
+                    'url'      => '#',
                 ],
-                'options' => ['class' => 'customclass', 'type' => 'submit'],
+                'options'   => ['class' => 'customclass', 'type' => 'submit'],
             ]);
             AjaxSubmitButton::end();
     } ?>

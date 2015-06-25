@@ -8,9 +8,9 @@ use yii\helpers\Html;
 
 class Poll extends Widget {
 
-    public $answerOptions =array();
+    public $answerOptions = [];
     public $answerOptionsData;
-    public $answers       = array();
+    public $answers       = [];
     public $isExist;
     public $isVote;
     public $params = array(
@@ -22,8 +22,10 @@ class Poll extends Widget {
     public $pollData;
     public $pollName      ='';
     public $sumOfVoices   = 0;
-    public $usersIPs      = array();
     
+    // experiemental ajax success override
+    public $ajaxSuccess   = [];
+
     public function setPollName($name) {
 
         $this->pollName = $name;
@@ -100,14 +102,16 @@ class Poll extends Widget {
     
     public function run() {
         $model = new VoicesOfPoll;
-        return  $this->render('index', [
-            'pollData'=> $this->pollData,
+
+        return $this->render('index', [
+            'ajaxSuccess' => $this->ajaxSuccess,
+            'answers'     => $this->answerOptions,
             'answersData' => $this->answers,
-            'params' => $this->params,
-            'model' => $model,
-            'answers' => $this->answerOptions,
+            'isVote'      => $this->isVote,
+            'model'       => $model,
+            'params'      => $this->params,
+            'pollData'    => $this->pollData,
             'sumOfVoices' => $this->sumOfVoices,
-            'isVote' => $this->isVote,
         ]);
     }
 }
