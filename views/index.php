@@ -85,18 +85,19 @@ use yii\widgets\ActiveForm;
         echo "Sign in to vote";
     }
 
+
+
     //
     if ((
-            $isVote                     == false
-            && Yii::$app->user->getId() != null
-            && $_POST['pollStatus']     != 'show'
-        ) || (
-            $_POST['nameOfPoll']        == $pollData['poll_name']
-            && $_POST['pollStatus']     != 'show'
-            && $_POST['pollStatus']     == 'vote'
-            && Yii::$app->user->getId() != null
+        $isVote                     == false
+        && Yii::$app->user->getId() != null
+        && $_POST['pollStatus']     != 'show'
+    ) || (
+        $_POST['nameOfPoll']        == $pollData['poll_name']
+        && $_POST['pollStatus']     != 'show'
+        && $_POST['pollStatus']     == 'vote'
+        && Yii::$app->user->getId() != null
     )) {
-            
         echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
         echo Html::activeRadioList($model,'voice',$answers);
         
@@ -104,7 +105,7 @@ use yii\widgets\ActiveForm;
         AjaxSubmitButton::begin([
             'label'   => 'Vote',
             'ajaxOptions' => [
-                'success' => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
+                'success' => new \yii\web\JsExpression('function(data){$("body").html(data);}'),
                 'type'    => 'POST',
                 'url'     => '#',
             ],
@@ -113,6 +114,8 @@ use yii\widgets\ActiveForm;
         AjaxSubmitButton::end();
         echo Html::endForm(); 
     };
+
+
 
     // 
     if ((
@@ -132,7 +135,7 @@ use yii\widgets\ActiveForm;
         <?php AjaxSubmitButton::begin([
             'label'   => 'Show results',
             'ajaxOptions' => [
-                'success' => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
+                'success' => new \yii\web\JsExpression('function(data){$("body").html(data);}'),
                 'type'    => 'POST',
                 'url'     => '#',
             ],
@@ -142,6 +145,8 @@ use yii\widgets\ActiveForm;
         echo '</form>';
     };
 
+
+
     //
     if (
         $isVote == true
@@ -149,10 +154,10 @@ use yii\widgets\ActiveForm;
             $_POST['nameOfPoll']    == $pollData['poll_name']
             && $_POST['pollStatus'] == 'show'
     )) {
-        for($i = 0; $i<count($answersData); $i++){ 
+        for($i = 0; $i<count($answersData); $i++) { 
             $voicesPer = ($sumOfVoices == 0) ? 0 : round($answersData[$i]['value']/$sumOfVoices, 4);
             $lineWidth = $params['maxLineWidth']*$voicesPer;
-        ?>
+            ?>
             <div class="single-line" style="margin-bottom: 10px; ">
                 <?php echo "<div class=\"poll-option-name\">".$answersData[$i]['answers'].": ".$answersData[$i]['value']."</div>"; ?>
                 <div  style="width: <?php echo $params['maxLineWidth']; ?>px;  height: <?php echo $params['linesHeight']; ?>px; background-color: <?php echo $params['backgroundLinesColor']; ?>; ">
@@ -165,22 +170,22 @@ use yii\widgets\ActiveForm;
         <?php };
     };
 
+
+
     //
     if (
         $isVote                 == false
         && $_POST['pollStatus'] == 'show'
-    ) {?>
+    ) { ?>
         <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
         <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
         <input type="hidden" name="pollStatus" value="vote"/>
         <?php AjaxSubmitButton::begin([
-            'label' => 'Vote',
+            'label'   => 'Vote',
             'ajaxOptions' => [
-                'type'=>'POST',
-                'url'=>'#',
-                'success' => new \yii\web\JsExpression('function(data){
-                    $("body").html(data);
-                    }'),
+                'success' => new \yii\web\JsExpression('function(data){$("body").html(data);}'),
+                'type'    => 'POST',
+                'url'     => '#',
             ],
             'options' => ['class' => 'customclass', 'type' => 'submit'],
         ]);
