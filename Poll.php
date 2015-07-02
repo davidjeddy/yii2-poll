@@ -94,9 +94,11 @@ class Poll extends Widget {
         $this->getDbData();
         $this->answers = $pollDB->getVoicesData($this->pollName);
         
-        for($i=0; $i<count($this->answers); $i++){
-             $this->sumOfVoices = $this->sumOfVoices + $this->answers[$i]['value'];
+        for ($i=0; $i<count($this->answers); $i++) {
+            
+            $this->sumOfVoices = $this->sumOfVoices + $this->answers[$i]['value'];
         }
+
         $this->isVote = $pollDB->isVote($this->pollName);
     }
     
