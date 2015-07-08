@@ -22,6 +22,7 @@ class Poll extends Widget {
     public $pollData;
     public $pollName      ='';
     public $sumOfVoices   = 0;
+    private $showsResults = false;
     
     // experiemental ajax success override
     public $ajaxSuccess   = [];
@@ -114,6 +115,7 @@ class Poll extends Widget {
             'params'      => $this->params,
             'pollData'    => $this->pollData,
             'sumOfVoices' => $this->sumOfVoices,
+            'showsResults'=> $showsResults,
         ]);
     }
 }
