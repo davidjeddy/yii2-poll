@@ -129,24 +129,22 @@ use yii\widgets\ActiveForm;
         $_POST['nameOfPoll']    == $pollData['poll_name']
         && $_POST['pollStatus'] != 'show')
         && $_POST['pollStatus'] == 'vote'
-    ){
-        if  ($showsResults) { ?>
-            <form method="POST" action="" class="support_forms">
-            <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
-            <input type="hidden" name="pollStatus" value="show"/>
-            <?php
-            AjaxSubmitButton::begin([
-                'label' => 'Show results',
-                'ajaxOptions' => [
-                    'success' => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
-                    'type'    => 'POST',
-                    'url'     => '#',
-                ],
-                'options' => ['class' => 'customclass', 'type' => 'submit'],
-            ]);
-            AjaxSubmitButton::end();
-            echo Html::endForm(); 
-        }
+    ){ ?>
+        <form method="POST" action="" class="support_forms">
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
+        <input type="hidden" name="pollStatus" value="show"/>
+        <?php
+        AjaxSubmitButton::begin([
+            'label' => 'Show results',
+            'ajaxOptions' => [
+                'success' => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
+                'type'    => 'POST',
+                'url'     => '#',
+            ],
+            'options' => ['class' => 'customclass', 'type' => 'submit'],
+        ]);
+        AjaxSubmitButton::end();
+        echo Html::endForm(); 
     }
 
 
