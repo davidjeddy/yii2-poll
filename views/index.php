@@ -150,15 +150,18 @@ use yii\widgets\ActiveForm;
 
 
     //
-    if ( $isVote == true
-        || (
-            $_POST['nameOfPoll']==$pollData['poll_name']
-            && $_POST['pollStatus']=='show'
-    )) {
+    if ($isVote == true
+        || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='show')
+    ) {
         for ($i = 0; $i<count($answersData); $i++) { 
-            $lineWidth = 
-                $params['maxLineWidth'] * $sumOfVoices
-                ?: round($answersData[$i]['value']/$sumOfVoices, 2, PHP_ROUND_HALF_UP); 
+            $voicesPer = 0;
+            if($sumOfVoices==0){
+                $voicesPer = 0;
+            } else {
+                $voicesPer = round($answersData[$i]['value']/$sumOfVoices, 4);
+            }
+            
+            $lineWidth = $params['maxLineWidth']*$voicesPer;   
             ?>
             <div class="single-line" style="margin-bottom: 10px; ">
                 <?php echo "<div class=\"poll-option-name\">".$answersData[$i]['answers'].": ".$answersData[$i]['value']."</div>"; ?>
@@ -168,27 +171,37 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
             </div>
-        <?php }
-        }
+    <?php }
+    }
 
-        if (
-            $isVote == false
-            && $_POST['pollStatus']=='show'
-        ){ ?>
-            <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
-            <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
-            <input type="hidden" name="pollStatus" value="vote"/>
-            <?php
-                AjaxSubmitButton::begin([
-                'label' => 'Vote',
-                'ajaxOptions' => [
-                    'success'  => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
-                    'type'     => 'POST',
-                    'url'      => '#',
-                ],
-                'options'   => ['class' => 'customclass', 'type' => 'submit'],
-            ]);
-            AjaxSubmitButton::end();
-    } ?>
+
+
+    // show 'continue' button since the user has voted
+    if ($isVote == true) {
+        echo '<button type="submit" id="w0Continue" class="customclass" onClick="location.reload();">Continue</button>';
+    }
+
+
+
+    //
+    if (
+        $isVote == false
+        && $_POST['pollStatus']=='show'
+    ){ ?>
+        <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
+        <input type="hidden" name="pollStatus" value="vote"/>
+        <?php
+            AjaxSubmitButton::begin([
+            'label' => 'Vote',
+            'ajaxOptions' => [
+                'success'  => new \yii\web\JsExpression('function(data){ $("body").html(data); }'),
+                'type'     => 'POST',
+                'url'      => '#',
+            ],
+            'options'   => ['class' => 'customclass', 'type' => 'submit'],
+        ]);
+        AjaxSubmitButton::end();
+    }; ?>
     </form>
 </div>
