@@ -83,13 +83,16 @@ class Poll extends Widget {
 
         if(Yii::$app->request->isAjax){
             if(isset($_POST['VoicesOfPoll'])){
-                if($_POST['poll_name']==$this->pollName){
-                   $pollDB->updateAnswers($this->pollName, $_POST['VoicesOfPoll']['voice'], 
-                    $this->answerOptions);
+                if($_POST['poll_name']==$this->pollName && isset($_POST['VoicesOfPoll']['voice'])){
+                    $pollDB->updateAnswers(
+                        $this->pollName,
+                        $_POST['VoicesOfPoll']['voice'], 
+                        $this->answerOptions
+                    );
+
                     $pollDB->updateUsers($this->pollName);
                 }    
-            }
-            
+            }          
         }
         $this->getDbData();
         $this->answers = $pollDB->getVoicesData($this->pollName);

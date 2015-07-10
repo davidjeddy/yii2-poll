@@ -90,18 +90,24 @@ class PollDb {
         return $voicesData;
     }
 
-    public function updateAnswers($pollName, $voise, $answerOptions) {
-        if(isset($_POST['VoicesOfPoll']['voice'])){
-            $db = Yii::$app->db;
-            /* if( !array_search(Yii::$app->user->getId(),$ids) == false) {
+    /**
+     * [updateAnswers description]
+     * @version  2.0.7
+     * @since  na
+     * @param  string $pollName     Poll name
+     * @param  integer $voice       Integer of chosen key
+     * @param  array $answerOptions Array fo possible options
+     * @return object
+     */
+    public function updateAnswers($pollName, $voice, $answerOptions) {
 
-                return false;
-            } */
-            
-            $command = $db->createCommand("UPDATE poll_response SET value=value +1  
-                     WHERE poll_name='$pollName' AND answers='$answerOptions[$voise]'")->execute();
-            
-        }
+        return Yii::$app->db->createCommand("
+            UPDATE poll_response
+            SET value = value +1  
+            WHERE poll_name = '$pollName'
+                AND answers = '$answerOptions[$voice]'")
+        ->execute();
+
     }
 
     public function updateUsers($pollName) {
