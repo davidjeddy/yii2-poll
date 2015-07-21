@@ -152,46 +152,15 @@ class PollDb {
         }
     }
 
-    public function createTables() {
-        $db = Yii::$app->db;
-        $command_1 = $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `poll_user` (
-            `id`            int(11) NOT NULL AUTO_INCREMENT,
-            `poll_id`       int(11) NOT NULL,
-            `user_id`       int(11) NOT NULL,
-            'created_at'    int(11) NOT NULL,
-            'created_at'    int(11) NULL,
-            'created_at'    int(11) NULL,
-            PRIMARY KEY (`id`),
-            KEY `poll_id` (`poll_id`)
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-        )->execute();
-                    
-        $command_2 = $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `poll_question` (
-            `id`            int(11) NOT NULL AUTO_INCREMENT,
-            `poll_name`     varchar(128) NOT NULL,
-            `answer_options`text NOT NULL,
-            'created_at'    int(11) NOT NULL,
-            'created_at'    int(11) NULL,
-            'created_at'    int(11) NULL,
-            PRIMARY KEY (`id`),
-            KEY `poll_name` (`poll_name`(128))
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-        )->execute();
-       
-       $command_3 = $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `poll_response` (
-            `id`            int(11) NOT NULL AUTO_INCREMENT,
-            `poll_name`     varchar(128) NOT NULL,
-            `answers`       varchar(128) CHARACTER SET utf8mb4 NOT NULL,
-            `value`         int(11) NOT NULL,
-            'created_at'    int(11) NOT NULL,
-            'created_at'    int(11) NULL,
-            'created_at'    int(11) NULL,
-            PRIMARY KEY (`id`),
-            KEY `poll_name` (`poll_name`(128))
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
+    /**
+     * Create the DBO TBO and events using a sql dump file
+     *
+     * @todo  Differetn SQL files based on the DB type widget settings
+     * @return [type] [description]
+     */
+    public function createTables() {   
+        return Yii::$app->db->createCommand(
+            file_get_contents("./sql/mysql.sql")
         )->execute(); 
     }
 
