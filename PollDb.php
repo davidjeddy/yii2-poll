@@ -6,6 +6,9 @@ use yii;
 
 class PollDb {
 
+    /**
+     * 
+     */
     public function isPollExist($pollName) {
         $db = Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
@@ -56,12 +59,12 @@ class PollDb {
 
         foreach ($pollObj->answerOptions as $key => $value) {
 
-            $answer = $db->createCommand('
-                SELECT `answers`
-                FROM `poll_response`
-                WHERE `poll_name` = "'.$pollObj->pollName.'"
-                    AND `answers` = "'.$value.'"
-            ')->queryOne();
+            $answer = (new \yii\db\Query())
+                ->select(['answers'])
+                ->from('poll_response')
+                ->andWhere(['poll_name' => $pollObj->pollName])
+                ->andWhere(['answers' => $value])
+                ->one();
 
             if (!$answer) {
                 $db->createCommand()->insert('poll_response', [
@@ -73,15 +76,18 @@ class PollDb {
         }
 
         // remove answers that are no longer a part of the poll answer_options
-        $db->createCommand('
-            DELETE FROM `poll_response`
-            WHERE `poll_name` = "'.$pollObj->pollName.'"
-                AND `answers` NOT IN ( \''.implode($pollObj->answerOptions, "', '").'\' );
-        ')->execute();
-
-        return true;
+        // source http://stackoverflow.com/questions/31672033/how-do-i-delete-rows-in-yii2
+        return (new \yii\db\Query())
+            ->createCommand()
+            ->delete('poll_response')
+            ->where(['poll_name' => $pollObj->pollName])
+            ->where(['NOT IN', 'answers', implode($pollObj->answerOptions, "', '")])
+            ->execute();
     }
 
+    /**
+     * 
+     */
     public function getVoicesData($pollName) {
         $db = Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_response WHERE poll_name=:pollName')->
@@ -110,6 +116,9 @@ class PollDb {
 
     }
 
+    /**
+     * 
+     */
     public function updateUsers($pollName) {
         $db = Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
@@ -127,6 +136,9 @@ class PollDb {
             ])->execute(); 
     }
 
+    /**
+     * 
+     */
     public  function isVote($pollName) {
         $db = Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
@@ -153,17 +165,54 @@ class PollDb {
     }
 
     /**
-     * Create the DBO TBO and events using a sql dump file
-     *
-     * @todo  Differetn SQL files based on the DB type widget settings
-     * @return [type] [description]
+     * 
      */
-    public function createTables() {   
-        return Yii::$app->db->createCommand(
-            file_get_contents("./sql/mysql.sql")
+    public function createTables() {
+        $db = Yii::$app->db;
+        $command_1 = $db->createCommand("
+            CREATE TABLE IF NOT EXISTS `poll_user` (
+            `id`            int(11) NOT NULL AUTO_INCREMENT,
+            `poll_id`       int(11) NOT NULL,
+            `user_id`       int(11) NOT NULL,
+            'created_at'    int(11) NOT NULL,
+            'created_at'    int(11) NULL,
+            'created_at'    int(11) NULL,
+            PRIMARY KEY (`id`),
+            KEY `poll_id` (`poll_id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
+        )->execute();
+                    
+        $command_2 = $db->createCommand("
+            CREATE TABLE IF NOT EXISTS `poll_question` (
+            `id`            int(11) NOT NULL AUTO_INCREMENT,
+            `poll_name`     varchar(128) NOT NULL,
+            `answer_options`text NOT NULL,
+            'created_at'    int(11) NOT NULL,
+            'created_at'    int(11) NULL,
+            'created_at'    int(11) NULL,
+            PRIMARY KEY (`id`),
+            KEY `poll_name` (`poll_name`(128))
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
+        )->execute();
+       
+       $command_3 = $db->createCommand("
+            CREATE TABLE IF NOT EXISTS `poll_response` (
+            `id`            int(11) NOT NULL AUTO_INCREMENT,
+            `poll_name`     varchar(128) NOT NULL,
+            `answers`       varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+            `value`         int(11) NOT NULL,
+            'created_at'    int(11) NOT NULL,
+            'created_at'    int(11) NULL,
+            'created_at'    int(11) NULL,
+            PRIMARY KEY (`id`),
+            KEY `poll_name` (`poll_name`(128))
+            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
         )->execute(); 
     }
 
+    /**
+     * 
+     */
     public function isTableExists() {
         $db      = Yii::$app->db;
         $command = $db->createCommand("SHOW TABLES LIKE 'poll_question'");
