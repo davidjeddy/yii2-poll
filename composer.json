@@ -1,27 +1,35 @@
 {
-    "name": "davidjeddy/yii2poll",
-    "description": "Widget to create custom polls for Yii 2.0 framework",
-    "keywords": ["yii2", "poll", "widget", "poll-widget", "yii2-poll-widget"],
-    "type": "yii2-extension",
-    "minimum-stability": "dev",
-    "license": "BSD-2-Clause",
-    "support": {
-        "source": "https://github.com/davidjeddy/yii2poll"
+  "name": "davidjeddy/yii2poll",
+  "description": "Widget to create custom polls for Yii 2.0 framework",
+  "keywords": [
+    "yii2",
+    "poll",
+    "widget",
+    "poll-widget",
+    "yii2-poll-widget"
+  ],
+  "type": "yii2-extension",
+  "minimum-stability": "dev",
+  "license": "BSD-2-Clause",
+  "support": {
+    "source": "https://github.com/davidjeddy/yii2poll"
+  },
+  "authors": [
+    {
+      "name": "Sergey Dzhus",
+      "email": "Dzhus1111@gmail.com"
     },
-    "authors": [
-        {
-            "name": "Sergey Dzhus",
-            "email": "Dzhus1111@gmail.com"
-        },
-        {
-            "name": "David J Eddy",
-            "email": "me@davidjeddy.com"
-        }
-    ],
-    "require": {
-        "yiisoft/yii2": "*"
-    },
-    "autoload": {
-        "psr-4": { "davidjeddy\\yii2poll\\": "" }
+    {
+      "name": "David J Eddy",
+      "email": "me@davidjeddy.com"
     }
+  ],
+  "require": {
+    "yiisoft/yii2": "^2"
+  },
+  "autoload": {
+    "psr-4": {
+      "davidjeddy\\yii2poll\\": ""
+    }
+  }
 }
