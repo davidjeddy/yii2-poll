@@ -75,7 +75,7 @@ class Poll extends Widget
         if (count($this->isExist) == 0) {
             $pollDB->createTables();
         }
-        if ($this->answerOptions != null) {
+        if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
         }
 

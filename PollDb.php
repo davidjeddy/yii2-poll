@@ -130,7 +130,7 @@ class PollDb
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
         bindParam(':pollName', $pollName);
         $userId;
-        if (Yii::$app->user->getId() == null) {
+        if (Yii::$app->user->getId() === null) {
             $userId = 0;
         } else {
             $userId = Yii::$app->user->getId();
@@ -152,7 +152,7 @@ class PollDb
         bindParam(':pollName', $pollName);
         $pollData = $command->queryOne();
         $userId;
-        if (Yii::$app->user->getId() == null) {
+        if (Yii::$app->user->getId() === null) {
             $userId = 0;
         } else {
             $userId = Yii::$app->user->getId();
@@ -162,7 +162,7 @@ class PollDb
         bindParam(':pollId', $pollData['id']);
         $result = $command->queryOne();
 
-        if ($result == null) {
+        if ($result === null) {
 
             return false;
         } else {
@@ -177,7 +177,7 @@ class PollDb
     public function createTables()
     {
         $db = Yii::$app->db;
-        $command_1 = $db->createCommand("
+        $db->createCommand("
             CREATE TABLE IF NOT EXISTS `poll_user` (
             `id`            int(11) NOT NULL AUTO_INCREMENT,
             `poll_id`       int(11) NOT NULL,
@@ -190,7 +190,7 @@ class PollDb
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
         )->execute();
 
-        $command_2 = $db->createCommand("
+        $db->createCommand("
             CREATE TABLE IF NOT EXISTS `poll_question` (
             `id`            int(11) NOT NULL AUTO_INCREMENT,
             `poll_name`     varchar(128) NOT NULL,
@@ -203,7 +203,7 @@ class PollDb
             ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
         )->execute();
 
-        $command_3 = $db->createCommand("
+        $db->createCommand("
             CREATE TABLE IF NOT EXISTS `poll_response` (
             `id`            int(11) NOT NULL AUTO_INCREMENT,
             `poll_name`     varchar(128) NOT NULL,

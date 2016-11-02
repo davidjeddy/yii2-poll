@@ -2,8 +2,8 @@
 use davidjeddy\yii2poll\AjaxSubmitButton;
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+
 ?>
 
 <style>
@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
         margin-bottom: 10px;
         background: #ffffff;
     }
-    
+
     .poll label{
         width: 100%;
         font-size: 10pt;
@@ -21,18 +21,18 @@ use yii\widgets\ActiveForm;
         display: block;
         color: #464646;
     }
-    
+
     .poll label:hover{
         cursor: pointer;
     }
-    
+
     .poll button[type="submit"]{
         font-weight: bold;
         font-size: 10pt;
         margin-top: 10px;
         color: #4682B4;
     }
-    
+
     .poll-option-name{
         font-weight: bold;
         font-size: 10pt;
@@ -42,11 +42,11 @@ use yii\widgets\ActiveForm;
         font-weight: bold;
         font-size: 10pt;
         color: #464646;
-        padding: 0; 
+        padding: 0;
         margin: 0;
         max-width: 50px;
     }
-    
+
     .support_forms button[type="submit"]{
         border: none;
         font-weight: normal;
@@ -54,7 +54,7 @@ use yii\widgets\ActiveForm;
         margin-left: 0;
         padding: 0;
         background: #ffffff;
-        
+
     }
     .support_forms button[type="submit"]:hover{
         text-decoration: underline;
@@ -81,7 +81,7 @@ use yii\widgets\ActiveForm;
         $_POST['nameOfPoll']        == $pollData['poll_name']
         && $_POST['pollStatus']     != 'show'
         && $_POST['pollStatus']     == 'vote'
-        && Yii::$app->user->getId() == null
+        && Yii::$app->user->getId() === null
     )) {
         echo "Sign in to vote";
     };
@@ -97,7 +97,7 @@ use yii\widgets\ActiveForm;
         $_POST['nameOfPoll']        == $pollData['poll_name']
         && $_POST['pollStatus']     != 'show'
         && $_POST['pollStatus']     == 'vote'
-        && Yii::$app->user->getId() != null
+        && Yii::$app->user->getId() !== null
     )) {
         echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
             echo Html::activeRadioList($model,'voice',$answers);
@@ -113,7 +113,7 @@ use yii\widgets\ActiveForm;
                 'options' => ['class' => 'customclass', 'type' => 'submit'],
             ]);
             AjaxSubmitButton::end();
-        echo Html::endForm(); 
+        echo Html::endForm();
     }
 
 
@@ -124,7 +124,7 @@ use yii\widgets\ActiveForm;
         && $_POST['pollStatus'] != 'show'
     ) || (
         $_POST['pollStatus']        != 'show'
-        && Yii::$app->user->getId() == null
+        && Yii::$app->user->getId() === null
     ) || (
         $_POST['nameOfPoll']    == $pollData['poll_name']
         && $_POST['pollStatus'] != 'show')
@@ -144,7 +144,7 @@ use yii\widgets\ActiveForm;
             'options' => ['class' => 'customclass', 'type' => 'submit'],
         ]);
         AjaxSubmitButton::end();
-        echo Html::endForm(); 
+        echo Html::endForm();
     }
 
 
@@ -153,15 +153,15 @@ use yii\widgets\ActiveForm;
     if ($isVote == true
         || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='show')
     ) {
-        for ($i = 0; $i<count($answersData); $i++) { 
+        for ($i = 0; $i<count($answersData); $i++) {
             $voicesPer = 0;
             if($sumOfVoices==0){
                 $voicesPer = 0;
             } else {
                 $voicesPer = round($answersData[$i]['value']/$sumOfVoices, 4);
             }
-            
-            $lineWidth = $params['maxLineWidth']*$voicesPer;   
+
+            $lineWidth = $params['maxLineWidth']*$voicesPer;
             ?>
             <div class="single-line" style="margin-bottom: 10px; ">
                 <?php echo "<div class=\"poll-option-name\">".$answersData[$i]['answers'].": ".$answersData[$i]['value']."</div>"; ?>
