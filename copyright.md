@@ -1,5 +1,5 @@
 Copyright (c) 2015, Sergey Dzhus
-Copyright (c) 2015, David J Eddy
+Copyright (c) 2017, David J Eddy
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

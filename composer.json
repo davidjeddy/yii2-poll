@@ -29,7 +29,7 @@
   },
   "autoload": {
     "psr-4": {
-      "davidjeddy\\yii2poll\\": ""
+      "davidjeddy\\yii2-poll\\": "./src"
     }
   }
 }
