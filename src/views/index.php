@@ -1,6 +1,14 @@
 <?php
 use yii\helpers\Html;
 use davidjeddy\yii2poll\AjaxSubmitButton;
+
+/* @var $isVote boolean */
+/* @var $model yii\base\Model */
+/* @var $answers array */
+/* @var $ajaxSuccess string */
+/* @var $answersData */
+/* @var $sumOfVoices integer */
+
 ?>
 
 <style>
@@ -72,7 +80,7 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
     //
     if ((
         $_POST['pollStatus']        !='show'
-        && $isVote                  == false
+        && $isVote                  === false
         && Yii::$app->user->getId() ==null
     ) || (
         $_POST['nameOfPoll']        == $pollData['poll_name']
@@ -150,7 +158,8 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
     if ($isVote == true
         || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='show')
     ) {
-        for ($i = 0; $i<count($answersData); $i++) {
+        $answerCount = count($answersData);
+        for ($i = 0; $i < $answerCount; $i++) {
             $voicesPer = 0;
             if($sumOfVoices==0){
                 $voicesPer = 0;

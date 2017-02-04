@@ -103,7 +103,8 @@ class Poll extends Widget
         $this->getDbData();
         $this->answers = $pollDB->getVoicesData($this->pollName);
 
-        for ($i = 0; $i < count($this->answers); $i++) {
+        $answerCount = count($this->answers);
+        for ($i = 0; $i < $answerCount; $i++) {
 
             $this->sumOfVoices = $this->sumOfVoices + $this->answers[$i]['value'];
         }
