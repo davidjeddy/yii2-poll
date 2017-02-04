@@ -1,9 +1,6 @@
 <?php
-use davidjeddy\yii2poll\AjaxSubmitButton;
-
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+use davidjeddy\yii2poll\AjaxSubmitButton;
 ?>
 
 <style>

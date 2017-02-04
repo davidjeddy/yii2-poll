@@ -23,7 +23,7 @@ class Poll extends Widget
     public $pollName = '';
     public $sumOfVoices = 0;
 
-    // experiemental ajax success override
+    // experimental ajax success override
     public $ajaxSuccess = [];
 
     public function setPollName($name)
