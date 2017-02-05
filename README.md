@@ -2,12 +2,12 @@ yii2-poll
 =========
 
 ## Badges
-[![Latest Stable Version](https://poser.pugx.org/davidjeddy/yii2poll/v/stable)](https://packagist.org/packages/davidjeddy/yii2poll)
-[![Total Downloads](https://poser.pugx.org/davidjeddy/yii2poll/downloads)](https://packagist.org/packages/davidjeddy/yii2poll)
-[![Latest Unstable Version](https://poser.pugx.org/davidjeddy/yii2poll/v/unstable)](https://packagist.org/packages/davidjeddy/yii2poll)
-[![License](https://poser.pugx.org/davidjeddy/yii2poll/license)](https://packagist.org/packages/davidjeddy/yii2poll)
-[![Monthly Downloads](https://poser.pugx.org/davidjeddy/yii2poll/d/monthly)](https://packagist.org/packages/davidjeddy/yii2poll)
-[![Daily Downloads](https://poser.pugx.org/davidjeddy/yii2poll/d/daily)](https://packagist.org/packages/davidjeddy/yii2poll)
+[![Latest Stable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/stable)](https://packagist.org/packages/davidjeddy/yii2-poll)
+[![Total Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/downloads)](https://packagist.org/packages/davidjeddy/yii2-poll)
+[![Latest Unstable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/unstable)](https://packagist.org/packages/davidjeddy/yii2-poll)
+[![License](https://poser.pugx.org/davidjeddy/yii2-poll/license)](https://packagist.org/packages/davidjeddy/yii2-poll)
+[![Monthly Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/d/monthly)](https://packagist.org/packages/davidjeddy/yii2-poll)
+[![Daily Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/d/daily)](https://packagist.org/packages/davidjeddy/yii2-poll)
 
 ## About
 Create a basic custom polls for Yii 2.x.
