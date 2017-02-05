@@ -31,11 +31,6 @@ class PollWidget extends Widget
     /**
      * @var
      */
-    public $isExist;
-
-    /**
-     * @var
-     */
     public $isVote;
 
     /**
@@ -130,15 +125,14 @@ class PollWidget extends Widget
      */
     public function init()
     {
-
         parent::init();
 
         $pollDB = new PollDb;
-        $this->isExist = $pollDB->isTableExists();
 
-        if (count($this->isExist) == 0) {
-            $pollDB->createTables();
+        if ($pollDB->doTablesExist() < 3) {
+            return false;
         }
+
         if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
         }

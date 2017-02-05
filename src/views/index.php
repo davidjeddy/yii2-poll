@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use davidjeddy\yii2poll\AjaxSubmitButton;
+use davidjeddy\poll\AjaxSubmitButton;
 
 /* @var $isVote boolean */
 /* @var $model yii\base\Model */
