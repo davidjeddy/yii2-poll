@@ -18,25 +18,25 @@ class m170205110000Install extends Migration
 
         $this->createTable('{{%poll_question}}', [
             'id'             => $this->primaryKey(),
-            'poll_question'  => $this->string(128),
-            'answer_options' => $this->integer(11)->notNull(),
+            'question_text'  => $this->string(128),
+            'answer_options' => $this->text()->notNull(),
             'created_at'     => $this->integer(11)->notNull(),
             'updated_at'     => $this->integer(11),
             'deleted_at'     => $this->integer(11)
         ], $tableOptions);
 
         $this->createTable('{{%poll_response}}', [
-            'user_id'    => $this->primaryKey(11),
-            'poll_name'  => $this->string(128),
-            'answers'    => $this->string(100),
-            'value'      => $this->integer(11),
-            'created_at' => $this->integer(11)->notNull(),
-            'updated_at' => $this->integer(11),
-            'deleted_at' => $this->integer(11)
+            'user_id'       => $this->primaryKey(11),
+            'question_text' => $this->string(128),
+            'answers'       => $this->text(),
+            'value'         => $this->integer(11),
+            'created_at'    => $this->integer(11)->notNull(),
+            'updated_at'    => $this->integer(11),
+            'deleted_at'    => $this->integer(11)
         ], $tableOptions);
 
         $this->createTable('{{%poll_user}}', [
-            'id'      = > $this->primaryKey(11),
+            'id'      => $this->primaryKey(11),
             'poll_id' => $this->integer(11),
             'user_id' => $this->integer(11)
         ], $tableOptions);

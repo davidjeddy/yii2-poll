@@ -75,7 +75,7 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
 
 <div class="poll" style="width:<?php echo $params['maxLineWidth']+55;?>px;" >
     <?php
-    echo "<div style=\"max-width:".$params['maxLineWidth']."px; word-wrap: break-word; margin-bottom: 10px; font-size:12pt; font-weight:bold;\">".$pollData['poll_name']."</div>";
+    echo "<div style=\"max-width:".$params['maxLineWidth']."px; word-wrap: break-word; margin-bottom: 10px; font-size:12pt; font-weight:bold;\">".$pollData['question_text']."</div>";
 
     //
     if ((
@@ -83,7 +83,7 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
         && $isVote                  === false
         && \Yii::$app->user->getId() ==null
     ) || (
-        $_POST['nameOfPoll']        == $pollData['poll_name']
+        $_POST['nameOfPoll']        == $pollData['question_text']
         && $_POST['pollStatus']     != 'show'
         && $_POST['pollStatus']     == 'vote'
         && \Yii::$app->user->getId() === null
@@ -99,14 +99,14 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
         && \Yii::$app->user->getId()!=null
         && $_POST['pollStatus']!='show'
     ) || (
-        $_POST['nameOfPoll']        == $pollData['poll_name']
+        $_POST['nameOfPoll']        == $pollData['question_text']
         && $_POST['pollStatus']     != 'show'
         && $_POST['pollStatus']     == 'vote'
         && \Yii::$app->user->getId() !== null
     )) {
         echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
             echo Html::activeRadioList($model,'voice',$answers);
-            echo '<input type="hidden" name="poll_name" value="'.$pollData['poll_name'].'"/>';
+            echo '<input type="hidden" name="question_text" value="'.$pollData['question_text'].'"/>';
 
             AjaxSubmitButton::begin([
                 'label' => 'Vote',
@@ -131,12 +131,12 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
         $_POST['pollStatus']        != 'show'
         && \Yii::$app->user->getId() === null
     ) || (
-        $_POST['nameOfPoll']    == $pollData['poll_name']
+        $_POST['nameOfPoll']    == $pollData['question_text']
         && $_POST['pollStatus'] != 'show')
         && $_POST['pollStatus'] == 'vote'
     ){ ?>
         <form method="POST" action="" class="support_forms">
-        <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['question_text']?>"/>
         <input type="hidden" name="pollStatus" value="show"/>
         <?php
         AjaxSubmitButton::begin([
@@ -156,7 +156,7 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
 
     //
     if ($isVote == true
-        || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='show')
+        || ($_POST['nameOfPoll']==$pollData['question_text'] && $_POST['pollStatus']=='show')
     ) {
         $answerCount = count($answersData);
         for ($i = 0; $i < $answerCount; $i++) {
@@ -195,7 +195,7 @@ use davidjeddy\yii2poll\AjaxSubmitButton;
         && $_POST['pollStatus']=='show'
     ){ ?>
         <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
-        <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['question_text']?>"/>
         <input type="hidden" name="pollStatus" value="vote"/>
         <?php
             AjaxSubmitButton::begin([

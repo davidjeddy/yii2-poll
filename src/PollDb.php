@@ -11,15 +11,14 @@ namespace davidjeddy\poll;
  */
 class PollDb
 {
-
     /**
      *
      */
-    public function isPollExist($pollName)
+    public function isPollExist($questionText)
     {
         $db = \Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $pollName);
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
+            ->bindParam(':questionText', $questionText);
 
         $pollData = $command->queryOne();
 
@@ -44,14 +43,14 @@ class PollDb
             $answer = (new \yii\db\Query())
                 ->select(['answers'])
                 ->from('poll_response')
-                ->andWhere(['poll_name' => $pollObj->pollName])
+                ->andWhere(['question_text' => $pollObj->questionText])
                 ->andWhere(['answers' => $value])
                 ->one();
 
             if (!$answer) {
                 $db->createCommand()->insert('poll_response', [
                     'answers'   => $value,
-                    'poll_name' => $pollObj->pollName,
+                    'question_text' => $pollObj->questionText,
                     'value'     => 0,
                 ])->execute();
             }
@@ -62,56 +61,56 @@ class PollDb
         return (new \yii\db\Query())
             ->createCommand()
             ->delete('poll_response')
-            ->where(['poll_name' => $pollObj->pollName])
+            ->where(['question_text' => $pollObj->questionText])
             ->where(['NOT IN', 'answers', implode($pollObj->answerOptions, "', '")])
             ->execute();
     }
 
     /**
-     * @param $pollName
+     * @param $questionText
      *
      * @return array
      */
-    public function getVoicesData($pollName)
+    public function getVoicesData($questionText)
     {
         $db = \Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_response WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $pollName);
+        $command = $db->createCommand('SELECT * FROM poll_response WHERE question_text=:questionText')
+            ->bindParam(':questionText', $questionText);
         $voicesData = $command->queryAll();
 
         return $voicesData;
     }
 
     /**
-     * @param $pollName
+     * @param $questionText
      * @param $voice
      * @param $answerOptions
      *
      * @return int
      */
-    public function updateAnswers($pollName, $voice, $answerOptions)
+    public function updateAnswers($questionText, $voice, $answerOptions)
     {
 
         return \Yii::$app->db->createCommand("
             UPDATE poll_response
             SET value = value +1  
-            WHERE poll_name = '$pollName'
+            WHERE question_text = '$questionText'
                 AND answers = '$answerOptions[$voice]'")
             ->execute();
 
     }
 
     /**
-     * @param $pollName
+     * @param $questionText
      *
      * @return int
      */
-    public function updateUsers($pollName)
+    public function updateUsers($questionText)
     {
         $db = \Yii::$app->db;
 
-        $pollData = $db->createCommand('SELECT * FROM poll_question WHERE poll_name = :pollName')
-            ->bindParam(':pollName', $pollName)
+        $pollData = $db->createCommand('SELECT * FROM poll_question WHERE question_text = :questionText')
+            ->bindParam(':questionText', $questionText)
             ->queryOne();
 
         return $db->createCommand()
@@ -123,18 +122,18 @@ class PollDb
     }
 
     /**
-     * @param $pollName
+     * @param $questionText
      *
      * @return bool
      */
-    public function isVote($pollName)
+    public function isVote($questionText)
     {
         $db = \Yii::$app->db;
         $returnData = false;
 
         // get poll id
-        $pollData = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $pollName)
+        $pollData = $db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
+            ->bindParam(':questionText', $questionText)
             ->queryOne();
 
         $command = $db->createCommand("SELECT * FROM  poll_user  WHERE user_id=" . $this->getUserId() . " AND poll_id=:pollId")

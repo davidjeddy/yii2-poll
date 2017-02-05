@@ -56,7 +56,7 @@ class PollWidget extends Widget
     /**
      * @var string
      */
-    public $pollName = '';
+    public $questionText = '';
 
     /**
      * @var int
@@ -76,7 +76,7 @@ class PollWidget extends Widget
     public function setPollName($name)
     {
 
-        $this->pollName = $name;
+        $this->questionText = $name;
     }
 
     /**
@@ -87,8 +87,8 @@ class PollWidget extends Widget
 
         $db = \Yii::$app->db;
 
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $this->pollName);
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
+            ->bindParam(':questionText', $this->questionText);
 
         $this->pollData = $command->queryOne();
         $this->answerOptionsData = unserialize($this->pollData['answer_options']);
@@ -101,7 +101,7 @@ class PollWidget extends Widget
     {
         return \Yii::$app->db->createCommand()->insert('poll_question', [
             'answer_options' => $this->answerOptionsData,
-            'poll_name'      => $this->pollName,
+            'question_text'      => $this->questionText,
         ])->execute();
     }
 
@@ -144,7 +144,7 @@ class PollWidget extends Widget
         }
 
         // crate DB TBOs if they do not exist for this poll
-        if (!$pollDB->isPollExist($this->pollName)) {
+        if (!$pollDB->isPollExist($this->questionText)) {
             $this->setDbData();
         }
 
@@ -153,19 +153,19 @@ class PollWidget extends Widget
 
         if (\Yii::$app->request->isAjax) {
             if (isset($_POST['VoicesOfPoll'])) {
-                if ($_POST['poll_name'] == $this->pollName && isset($_POST['VoicesOfPoll']['voice'])) {
+                if ($_POST['question_text'] == $this->questionText && isset($_POST['VoicesOfPoll']['voice'])) {
                     $pollDB->updateAnswers(
-                        $this->pollName,
+                        $this->questionText,
                         $_POST['VoicesOfPoll']['voice'],
                         $this->answerOptions
                     );
 
-                    $pollDB->updateUsers($this->pollName);
+                    $pollDB->updateUsers($this->questionText);
                 }
             }
         }
         $this->getDbData();
-        $this->answers = $pollDB->getVoicesData($this->pollName);
+        $this->answers = $pollDB->getVoicesData($this->questionText);
 
         $answerCount = count($this->answers);
         for ($i = 0; $i < $answerCount; $i++) {
@@ -173,7 +173,7 @@ class PollWidget extends Widget
             $this->sumOfVoices = $this->sumOfVoices + $this->answers[$i]['value'];
         }
 
-        $this->isVote = $pollDB->isVote($this->pollName);
+        $this->isVote = $pollDB->isVote($this->questionText);
     }
 
     /**
