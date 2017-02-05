@@ -1,6 +1,15 @@
 yii2-poll
 =========
 
+## Badges
+[![Latest Stable Version](https://poser.pugx.org/davidjeddy/yii2poll/v/stable)](https://packagist.org/packages/davidjeddy/yii2poll)
+[![Total Downloads](https://poser.pugx.org/davidjeddy/yii2poll/downloads)](https://packagist.org/packages/davidjeddy/yii2poll)
+[![Latest Unstable Version](https://poser.pugx.org/davidjeddy/yii2poll/v/unstable)](https://packagist.org/packages/davidjeddy/yii2poll)
+[![License](https://poser.pugx.org/davidjeddy/yii2poll/license)](https://packagist.org/packages/davidjeddy/yii2poll)
+[![Monthly Downloads](https://poser.pugx.org/davidjeddy/yii2poll/d/monthly)](https://packagist.org/packages/davidjeddy/yii2poll)
+[![Daily Downloads](https://poser.pugx.org/davidjeddy/yii2poll/d/daily)](https://packagist.org/packages/davidjeddy/yii2poll)
+
+## About
 Create a basic custom polls for Yii 2.x.
 
 Installing
