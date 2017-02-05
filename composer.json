@@ -6,7 +6,7 @@
     "poll",
     "widget"
   ],
-  "type": "view widget",
+  "type": "library",
   "minimum-stability": "dev",
   "license": "BSD-2-Clause",
   "support": {
