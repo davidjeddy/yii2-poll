@@ -27,28 +27,6 @@ class PollDb
     }
 
     /**
-     * [setVoicesData description]
-     *
-     * @deprecated 2.0.2 Use pollAnswerOptions()
-     *
-     * @param [type] $pollName      [description]
-     * @param [type] $answerOptions [description]
-     */
-    public function setVoicesData($pollName, $answerOptions)
-    {
-        $db = \Yii::$app->db;
-        $count = count($answerOptions);
-
-        for ($i = 0; $i < $count; $i++) {
-            $db->createCommand()->insert('poll_response', [
-                'answers'   => $answerOptions[$i],
-                'poll_name' => $pollName,
-                'value'     => 0,
-            ])->execute();
-        }
-    }
-
-    /**
      * poll_response TBO logic
      * ADDS new answers dynamically.
      * REMOVES answers that are not part of $pollObj->answerOptionsData
@@ -97,8 +75,8 @@ class PollDb
     public function getVoicesData($pollName)
     {
         $db = \Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_response WHERE poll_name=:pollName')->
-        bindParam(':pollName', $pollName);
+        $command = $db->createCommand('SELECT * FROM poll_response WHERE poll_name=:pollName')
+            ->bindParam(':pollName', $pollName);
         $voicesData = $command->queryAll();
 
         return $voicesData;
@@ -125,22 +103,22 @@ class PollDb
 
     /**
      * @param $pollName
+     *
+     * @return int
      */
     public function updateUsers($pollName)
     {
         $db = \Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
-        bindParam(':pollName', $pollName);
-        $userId;
-        if (Yii::$app->user->getId() === null) {
-            $userId = 0;
-        } else {
-            $userId = \Yii::$app->user->getId();
-        }
-        $pollData = $command->queryOne();
-        $command = $db->createCommand()->insert('poll_user', [
-            'poll_id' => $pollData['id'],
-            'user_id' => $userId
+
+        $pollData = $db->createCommand('SELECT * FROM poll_question WHERE poll_name = :pollName')
+            ->bindParam(':pollName', $pollName)
+            ->queryOne();
+
+        return $db->createCommand()
+            ->insert('poll_user', [
+                'poll_id'    => $pollData['id'],
+                'user_id'    => $this->getUserId(),
+                'created_at' => time()
         ])->execute();
     }
 
@@ -152,74 +130,21 @@ class PollDb
     public function isVote($pollName)
     {
         $db = \Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
-        bindParam(':pollName', $pollName);
-        $pollData = $command->queryOne();
-        $userId;
-        if (Yii::$app->user->getId() === null) {
-            $userId = 0;
-        } else {
-            $userId = \Yii::$app->user->getId();
+        $returnData = false;
+
+        // get poll id
+        $pollData = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
+            ->bindParam(':pollName', $pollName)
+            ->queryOne();
+
+        $command = $db->createCommand("SELECT * FROM  poll_user  WHERE user_id=" . $this->getUserId() . " AND poll_id=:pollId")
+            ->bindParam(':pollId', $pollData['id']);
+
+        if ($command->queryOne()) {
+            $returnData = true;
         }
-        $db = \Yii::$app->db;
-        $command = $db->createCommand("SELECT * FROM  poll_user  WHERE user_id='$userId' AND poll_id=:pollId")->
-        bindParam(':pollId', $pollData['id']);
-        $result = $command->queryOne();
 
-        if ($result === null) {
-
-            return false;
-        } else {
-
-            return true;
-        }
-    }
-
-    /**
-     *
-     */
-    public function createTables()
-    {
-        $db = \Yii::$app->db;
-        $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `poll_user` (
-            `id`            int(11) NOT NULL AUTO_INCREMENT,
-            `poll_id`       int(11) NOT NULL,
-            `user_id`       int(11) NOT NULL,
-            'created_at'    int(11) NOT NULL,
-            'created_at'    int(11) NULL,
-            'created_at'    int(11) NULL,
-            PRIMARY KEY (`id`),
-            KEY `poll_id` (`poll_id`)
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-        )->execute();
-
-        $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `poll_question` (
-            `id`            int(11) NOT NULL AUTO_INCREMENT,
-            `poll_name`     varchar(128) NOT NULL,
-            `answer_options`text NOT NULL,
-            'created_at'    int(11) NOT NULL,
-            'created_at'    int(11) NULL,
-            'created_at'    int(11) NULL,
-            PRIMARY KEY (`id`),
-            KEY `poll_name` (`poll_name`(128))
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-        )->execute();
-
-        $db->createCommand("
-            CREATE TABLE IF NOT EXISTS `poll_response` (
-            `id`            int(11) NOT NULL AUTO_INCREMENT,
-            `poll_name`     varchar(128) NOT NULL,
-            `answers`       varchar(128) CHARACTER SET utf8mb4 NOT NULL,
-            `value`         int(11) NOT NULL,
-            'created_at'    int(11) NOT NULL,
-            'created_at'    int(11) NULL,
-            'created_at'    int(11) NULL,
-            PRIMARY KEY (`id`),
-            KEY `poll_name` (`poll_name`(128))
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8"
-        )->execute();
+        return $returnData;
     }
 
     /**
@@ -232,5 +157,15 @@ class PollDb
         $res = $command->queryAll();
 
         return $res;
+    }
+
+    /**
+     * @return int
+     */
+    private function getUserId()
+    {
+        $userId = (!empty(\Yii::$app->user->getId()) ? \Yii::$app->user->getId() : 0);
+
+        return (integer)$userId;
     }
 }
