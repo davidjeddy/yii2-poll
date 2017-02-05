@@ -2,6 +2,7 @@
 
 namespace davidjeddy\poll;
 
+use \Yii;
 use yii\base\Widget;
 
 /**
@@ -79,20 +80,17 @@ class PollWidget extends Widget
      */
     public function getDbData()
     {
+        $data = Yii::$app->db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
+            ->bindParam(':questionXText', $this->questionText)
+            ->queryOne();
 
-        $db = \Yii::$app->db;
-
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
-            ->bindParam(':questionText', $this->questionText);
-
-        $this->pollData = $command->queryOne();
-        $this->answerOptionsData = unserialize($this->pollData['answer_options']);
+        $this->answerOptionsData = unserialize($data['answer_options']);
     }
 
     /**
      * @return int
      */
-    public function setDbData()
+    public function saveNewPoll()
     {
         return \Yii::$app->db->createCommand()->insert('poll_question', [
             'answer_options' => $this->answerOptionsData,
@@ -137,9 +135,9 @@ class PollWidget extends Widget
             $this->answerOptionsData = serialize($this->answerOptions);
         }
 
-        // crate DB TBOs if they do not exist for this poll
-        if (!$pollDB->isPollExist($this->questionText)) {
-            $this->setDbData();
+        // Check the DB for the poll, if not found treat the poll as a new poll and save it.
+        if (!$pollDB->doesPollExist($this->questionText)) {
+            $this->saveNewPoll();
         }
 
         // check that all Poll answers exist

@@ -15,17 +15,17 @@ use \yii\db\Query;
 class PollDb
 {
     /**
+     * @param $questionText
      *
+     * @return bool
      */
-    public function isPollExist($questionText)
+    public function doesPollExist($questionText)
     {
-        $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE question_text = :questionText')
-            ->bindParam(':questionText', $questionText);
+        $val = Yii::$app->db->createCommand('SELECT * FROM poll_question WHERE question_text = :questionText')
+            ->bindParam(':questionText', $questionText)
+            ->queryOne();
 
-        $pollData = $command->queryOne();
-
-        return (empty($pollData) ? true : false);
+        return (!empty($val) ? true : false);
     }
 
     /**
