@@ -1,18 +1,16 @@
 {
-  "name": "davidjeddy/yii2poll",
-  "description": "Widget to create custom polls for Yii 2.0 framework",
+  "name": "davidjeddy/yii2-poll",
+  "description": "Widget to create custom polls for Yii 2.x framework.",
   "keywords": [
     "yii2",
     "poll",
-    "widget",
-    "poll-widget",
-    "yii2-poll-widget"
+    "widget"
   ],
-  "type": "yii2-extension",
+  "type": "view widget",
   "minimum-stability": "dev",
   "license": "BSD-2-Clause",
   "support": {
-    "source": "https://github.com/davidjeddy/yii2poll"
+    "source": "https://github.com/davidjeddy/yii2-poll"
   },
   "authors": [
     {
@@ -29,7 +27,7 @@
   },
   "autoload": {
     "psr-4": {
-      "davidjeddy\\yii2-poll\\": "./src"
+      "davidjeddy\\poll\\": "./src"
     }
   }
 }

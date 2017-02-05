@@ -1,9 +1,14 @@
 <?php
 
-namespace davidjeddy\yii2poll;
+namespace davidjeddy\poll;
 
-use yii;
-
+/**
+ * Class PollDb
+ *
+ * @author David J Eddy <me@davidjeddy.com>
+ *
+ * @package davidjeddy\poll
+ */
 class PollDb
 {
 
@@ -12,7 +17,7 @@ class PollDb
      */
     public function isPollExist($pollName)
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
             ->bindParam(':pollName', $pollName);
 
@@ -31,7 +36,7 @@ class PollDb
      */
     public function setVoicesData($pollName, $answerOptions)
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $count = count($answerOptions);
 
         for ($i = 0; $i < $count; $i++) {
@@ -54,7 +59,7 @@ class PollDb
      */
     public function pollAnswerOptions(\davidjeddy\yii2poll\Poll $pollObj)
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
 
         foreach ($pollObj->answerOptions as $key => $value) {
 
@@ -85,11 +90,13 @@ class PollDb
     }
 
     /**
+     * @param $pollName
      *
+     * @return array
      */
     public function getVoicesData($pollName)
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_response WHERE poll_name=:pollName')->
         bindParam(':pollName', $pollName);
         $voicesData = $command->queryAll();
@@ -98,21 +105,16 @@ class PollDb
     }
 
     /**
-     * [updateAnswers description]
+     * @param $pollName
+     * @param $voice
+     * @param $answerOptions
      *
-     * @version  2.0.7
-     * @since  na
-     *
-     * @param  string  $pollName Poll name
-     * @param  integer $voice Integer of chosen key
-     * @param  array   $answerOptions Array fo possible options
-     *
-     * @return object
+     * @return int
      */
     public function updateAnswers($pollName, $voice, $answerOptions)
     {
 
-        return Yii::$app->db->createCommand("
+        return \Yii::$app->db->createCommand("
             UPDATE poll_response
             SET value = value +1  
             WHERE poll_name = '$pollName'
@@ -122,18 +124,18 @@ class PollDb
     }
 
     /**
-     *
+     * @param $pollName
      */
     public function updateUsers($pollName)
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
         bindParam(':pollName', $pollName);
         $userId;
         if (Yii::$app->user->getId() === null) {
             $userId = 0;
         } else {
-            $userId = Yii::$app->user->getId();
+            $userId = \Yii::$app->user->getId();
         }
         $pollData = $command->queryOne();
         $command = $db->createCommand()->insert('poll_user', [
@@ -143,11 +145,13 @@ class PollDb
     }
 
     /**
+     * @param $pollName
      *
+     * @return bool
      */
     public function isVote($pollName)
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')->
         bindParam(':pollName', $pollName);
         $pollData = $command->queryOne();
@@ -155,9 +159,9 @@ class PollDb
         if (Yii::$app->user->getId() === null) {
             $userId = 0;
         } else {
-            $userId = Yii::$app->user->getId();
+            $userId = \Yii::$app->user->getId();
         }
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $command = $db->createCommand("SELECT * FROM  poll_user  WHERE user_id='$userId' AND poll_id=:pollId")->
         bindParam(':pollId', $pollData['id']);
         $result = $command->queryOne();
@@ -176,7 +180,7 @@ class PollDb
      */
     public function createTables()
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $db->createCommand("
             CREATE TABLE IF NOT EXISTS `poll_user` (
             `id`            int(11) NOT NULL AUTO_INCREMENT,
@@ -219,11 +223,11 @@ class PollDb
     }
 
     /**
-     *
+     * @return array
      */
     public function isTableExists()
     {
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
         $command = $db->createCommand("SHOW TABLES LIKE 'poll_question'");
         $res = $command->queryAll();
 

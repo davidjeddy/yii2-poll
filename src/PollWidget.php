@@ -1,41 +1,91 @@
 <?php
 
-namespace davidjeddy\yii2poll;
+namespace davidjeddy\poll;
 
-use yii;
 use yii\base\Widget;
 
-class Poll extends Widget
+/**
+ * Class PollWidget
+ *
+ * @author David J Eddy <me@davidjeddy.com>
+ *
+ * @package davidjeddy\poll
+ */
+class PollWidget extends Widget
 {
-
+    /**
+     * @var array
+     */
     public $answerOptions = [];
+
+    /**
+     * @var
+     */
     public $answerOptionsData;
+
+    /**
+     * @var array
+     */
     public $answers = [];
+
+    /**
+     * @var
+     */
     public $isExist;
+
+    /**
+     * @var
+     */
     public $isVote;
+
+    /**
+     * @var array
+     */
     public $params = [
         'backgroundLinesColor' => '#D3D3D3',
         'linesColor'           => '#4F9BC7',
         'linesHeight'          => 15,
         'maxLineWidth'         => 300,
     ];
+
+    /**
+     * @var
+     */
     public $pollData;
+
+    /**
+     * @var string
+     */
     public $pollName = '';
+
+    /**
+     * @var int
+     */
     public $sumOfVoices = 0;
+
+    /**
+     * @var array
+     */
 
     // experimental ajax success override
     public $ajaxSuccess = [];
 
+    /**
+     * @param $name
+     */
     public function setPollName($name)
     {
 
         $this->pollName = $name;
     }
 
+    /**
+     *
+     */
     public function getDbData()
     {
 
-        $db = Yii::$app->db;
+        $db = \Yii::$app->db;
 
         $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
             ->bindParam(':pollName', $this->pollName);
@@ -44,26 +94,40 @@ class Poll extends Widget
         $this->answerOptionsData = unserialize($this->pollData['answer_options']);
     }
 
+    /**
+     * @return int
+     */
     public function setDbData()
     {
-        return Yii::$app->db->createCommand()->insert('poll_question', [
+        return \Yii::$app->db->createCommand()->insert('poll_question', [
             'answer_options' => $this->answerOptionsData,
             'poll_name'      => $this->pollName,
         ])->execute();
     }
 
+    /**
+     * @param $params
+     */
     public function setParams($params)
     {
 
         $this->params = array_merge($this->params, $params);
     }
 
+    /**
+     * @param $param
+     *
+     * @return mixed
+     */
     public function getParams($param)
     {
 
         return $this->params[$param];
     }
 
+    /**
+     *
+     */
     public function init()
     {
 
@@ -87,7 +151,7 @@ class Poll extends Widget
         // check that all Poll answers exist
         $pollDB->pollAnswerOptions($this);
 
-        if (Yii::$app->request->isAjax) {
+        if (\Yii::$app->request->isAjax) {
             if (isset($_POST['VoicesOfPoll'])) {
                 if ($_POST['poll_name'] == $this->pollName && isset($_POST['VoicesOfPoll']['voice'])) {
                     $pollDB->updateAnswers(
@@ -112,6 +176,9 @@ class Poll extends Widget
         $this->isVote = $pollDB->isVote($this->pollName);
     }
 
+    /**
+     * @return string
+     */
     public function run()
     {
         $model = new VoicesOfPoll;
