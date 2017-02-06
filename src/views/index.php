@@ -79,13 +79,13 @@ use davidjeddy\poll\AjaxSubmitButton;
 
     //
     if ((
-        $_POST['pollStatus']        !='show'
+        Yii::$app->request->post()['pollStatus']        !='show'
         && $isVote                  === false
         && \Yii::$app->user->getId() ==null
     ) || (
-        $_POST['nameOfPoll']        == $pollData['question_text']
-        && $_POST['pollStatus']     != 'show'
-        && $_POST['pollStatus']     == 'vote'
+        Yii::$app->request->post()['nameOfPoll']        == $pollData['question_text']
+        && Yii::$app->request->post()['pollStatus']     != 'show'
+        && Yii::$app->request->post()['pollStatus']     == 'vote'
         && \Yii::$app->user->getId() === null
     )) {
         echo "Sign in to vote";
@@ -97,11 +97,11 @@ use davidjeddy\poll\AjaxSubmitButton;
     if ((
         $isVote == false
         && \Yii::$app->user->getId()!=null
-        && $_POST['pollStatus']!='show'
+        && Yii::$app->request->post()['pollStatus']!='show'
     ) || (
-        $_POST['nameOfPoll']        == $pollData['question_text']
-        && $_POST['pollStatus']     != 'show'
-        && $_POST['pollStatus']     == 'vote'
+        Yii::$app->request->post()['nameOfPoll']        == $pollData['question_text']
+        && Yii::$app->request->post()['pollStatus']     != 'show'
+        && Yii::$app->request->post()['pollStatus']     == 'vote'
         && \Yii::$app->user->getId() !== null
     )) {
         echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
@@ -126,14 +126,14 @@ use davidjeddy\poll\AjaxSubmitButton;
     //
     if ((
         $isVote                 == false
-        && $_POST['pollStatus'] != 'show'
+        && Yii::$app->request->post()['pollStatus'] != 'show'
     ) || (
-        $_POST['pollStatus']        != 'show'
+        Yii::$app->request->post()['pollStatus']        != 'show'
         && \Yii::$app->user->getId() === null
     ) || (
-        $_POST['nameOfPoll']    == $pollData['question_text']
-        && $_POST['pollStatus'] != 'show')
-        && $_POST['pollStatus'] == 'vote'
+        Yii::$app->request->post()['nameOfPoll']    == $pollData['question_text']
+        && Yii::$app->request->post()['pollStatus'] != 'show')
+        && Yii::$app->request->post()['pollStatus'] == 'vote'
     ){ ?>
         <form method="POST" action="" class="support_forms">
         <input type="hidden" name="nameOfPoll" value="<?=$pollData['question_text']?>"/>
@@ -156,7 +156,7 @@ use davidjeddy\poll\AjaxSubmitButton;
 
     //
     if ($isVote == true
-        || ($_POST['nameOfPoll']==$pollData['question_text'] && $_POST['pollStatus']=='show')
+        || (Yii::$app->request->post()['nameOfPoll']==$pollData['question_text'] && Yii::$app->request->post()['pollStatus']=='show')
     ) {
         $answerCount = count($answersData);
         for ($i = 0; $i < $answerCount; $i++) {
@@ -192,7 +192,7 @@ use davidjeddy\poll\AjaxSubmitButton;
     //
     if (
         $isVote == false
-        && $_POST['pollStatus']=='show'
+        && Yii::$app->request->post()['pollStatus']=='show'
     ){ ?>
         <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
         <input type="hidden" name="nameOfPoll" value="<?=$pollData['question_text']?>"/>

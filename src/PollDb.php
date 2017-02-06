@@ -15,7 +15,7 @@ use \yii\db\Query;
 class PollDb
 {
     /**
-     * @param $questionText
+     * @param $questionText string
      *
      * @return bool
      */
@@ -43,10 +43,6 @@ class PollDb
 
         try {
             $db = Yii::$app->db;
-
-            echo '<pre>';
-            print_r($pollObj);
-            exit(1);
 
             foreach ($pollObj->answerOptions as $key => $value) {
 
@@ -145,12 +141,18 @@ class PollDb
         $returnData = false;
 
         // get poll id
-        $pollData = $db->createCommand('SELECT * FROM poll_question WHERE question_text = :questionText')
+        $pollData = $db->createCommand('
+                SELECT *
+                FROM poll_question
+                WHERE question_text = :questionText')
             ->bindParam(':questionText', $questionText)
             ->queryOne();
 
-        $command = $db->createCommand("SELECT * FROM  poll_user  WHERE user_id=" . $this->getUserId()
-                . " AND poll_id=:pollId")
+        $command = $db->createCommand('
+                SELECT *
+                FROM  poll_user 
+                WHERE user_id = ' . $this->getUserId() . '
+                AND poll_id = :pollId')
             ->bindParam(':pollId', $pollData['id']);
 
         if ($command->queryOne()) {
@@ -161,21 +163,53 @@ class PollDb
     }
 
     /**
+     * @todo better way of check the table exist?
+     *
      * @return int
      */
     public function doTablesExist()
     {
         $count = 0;
-        $db = Yii::$app->db;
 
-        $tmp = $db->createCommand("SHOW TABLES LIKE 'poll_question'")->queryOne();
-        $count = ($tmp === 'poll_question') ? $count + 1 : 0;
-        $tmp = $db->createCommand("SHOW TABLES LIKE 'poll_response'")->queryOne();
-        $count = ($tmp === 'poll_response') ? $count + 1 : 0;
-        $tmp = $db->createCommand("SHOW TABLES LIKE 'poll_user'")->queryOne();
-        $count = ($tmp === 'poll_user') ? $count + 1 : 0;
+        $result = Yii::$app->db->createCommand("SHOW TABLES LIKE 'poll_question'")->queryOne();
+        $count = ($result === 'poll_question') ? $count + 1 : 0;
+        $result = Yii::$app->db->createCommand("SHOW TABLES LIKE 'poll_response'")->queryOne();
+        $count = ($result === 'poll_response') ? $count + 1 : 0;
+        $result = Yii::$app->db->createCommand("SHOW TABLES LIKE 'poll_user'")->queryOne();
+        $count = ($result === 'poll_user') ? $count + 1 : 0;
 
         return $count;
+    }
+
+    /**
+     * @param PollWidget $poll
+     *
+     * @return int
+     */
+    public function saveNewPoll(\davidjeddy\poll\PollWidget $poll)
+    {
+        return \Yii::$app->db->createCommand()
+            ->insert('poll_question', [
+                'answer_options' => serialize($poll->answerOptions),
+                'question_text'  => $poll->questionText
+            ])
+            ->execute();
+    }
+
+    /**
+     * @param PollWidget $poll
+     *
+     * @return mixed
+     */
+    public function getPollQuestionData(\davidjeddy\poll\PollWidget $poll)
+    {
+        $data = Yii::$app->db->createCommand('SELECT * FROM poll_question WHERE question_text = :questionText')
+            ->bindParam(':questionXText', $poll->questionText)
+            ->queryOne();
+
+        $returnData = unserialize($data['answer_options']);
+
+        return $returnData;
     }
 
     /**
