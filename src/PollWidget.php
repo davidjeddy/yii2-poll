@@ -67,36 +67,11 @@ class PollWidget extends Widget
     public $ajaxSuccess = [];
 
     /**
-     * @param $name
-     */
-    public function setPollName($name)
-    {
-
-        $this->questionText = $name;
-    }
-
-    /**
+     * DB interface object
      *
+     * @var null
      */
-    public function getDbData()
-    {
-        $data = Yii::$app->db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
-            ->bindParam(':questionXText', $this->questionText)
-            ->queryOne();
-
-        $this->answerOptionsData = unserialize($data['answer_options']);
-    }
-
-    /**
-     * @return int
-     */
-    public function saveNewPoll()
-    {
-        return \Yii::$app->db->createCommand()->insert('poll_question', [
-            'answer_options' => $this->answerOptionsData,
-            'question_text'      => $this->questionText,
-        ])->execute();
-    }
+    private $pollDB = null;
 
     /**
      * @param $params
@@ -123,49 +98,46 @@ class PollWidget extends Widget
      */
     public function init()
     {
-        parent::init();
-
-        $pollDB = new PollDb;
-
-        if ($pollDB->doTablesExist() < 3) {
-            return false;
-        }
+        $this->pollDB = new PollDb;
 
         if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
         }
 
         // Check the DB for the poll, if not found treat the poll as a new poll and save it.
-        if (!$pollDB->doesPollExist($this->questionText)) {
-            $this->saveNewPoll();
+        if (!$this->pollDB->doesPollExist($this->questionText)) {
+            $this->pollDB->saveNewPoll($this);
         }
 
         // check that all Poll answers exist
-        $pollDB->pollAnswerOptions($this);
+        $this->pollDB->pollAnswerOptions($this);
 
         if (\Yii::$app->request->isAjax) {
-            if (isset($_POST['VoicesOfPoll'])) {
-                if ($_POST['question_text'] == $this->questionText && isset($_POST['VoicesOfPoll']['voice'])) {
-                    $pollDB->updateAnswers(
-                        $this->questionText,
-                        $_POST['VoicesOfPoll']['voice'],
-                        $this->answerOptions
-                    );
 
-                    $pollDB->updateUsers($this->questionText);
-                }
+            if ($_POST['questionText'] === $this->questionText
+                && isset($_POST['VoicesOfPoll']['voice'])
+            ) {
+                $this->pollDB->updateAnswers(
+                    $this->questionText,
+                    $_POST['VoicesOfPoll']['voice'],
+                    $this->answerOptions
+                );
+
+                $this->pollDB->updatePollUsers($this->questionText);
             }
         }
-        $this->getDbData();
-        $this->answers = $pollDB->getVoicesData($this->questionText);
+
+        $this->answerOptionsData = $this->pollDB->getDbData($this);
+        $this->answers = $this->pollDB->getVoicesData($this->questionText);
 
         $answerCount = count($this->answers);
         for ($i = 0; $i < $answerCount; $i++) {
-
             $this->sumOfVoices = $this->sumOfVoices + $this->answers[$i]['value'];
         }
 
-        $this->isVote = $pollDB->isVote($this->questionText);
+        $this->isVote = $this->pollDB->isVote($this->questionText);
+
+        return parent::init();
     }
 
     /**
@@ -173,6 +145,10 @@ class PollWidget extends Widget
      */
     public function run()
     {
+        if ($this->pollDB->doTablesExist() < 3) {
+            return false;
+        }
+
         $model = new VoicesOfPoll;
 
         return $this->render('index', [

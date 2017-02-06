@@ -81,12 +81,12 @@ use davidjeddy\poll\AjaxSubmitButton;
     if ((
         Yii::$app->request->post()['pollStatus']        !='show'
         && $isVote                  === false
-        && \Yii::$app->user->getId() ==null
+        && Yii::$app->user->getId() ==null
     ) || (
-        Yii::$app->request->post()['nameOfPoll']        == $pollData['question_text']
+        Yii::$app->request->post()['nameOfPoll']        == $pollData['questionText']
         && Yii::$app->request->post()['pollStatus']     != 'show'
         && Yii::$app->request->post()['pollStatus']     == 'vote'
-        && \Yii::$app->user->getId() === null
+        && Yii::$app->user->getId() === null
     )) {
         echo "Sign in to vote";
     };
@@ -96,28 +96,28 @@ use davidjeddy\poll\AjaxSubmitButton;
     // Init poll VW. No answer submitted / found in DB
     if ((
         $isVote == false
-        && \Yii::$app->user->getId()!=null
+        && Yii::$app->user->getId()!=null
         && Yii::$app->request->post()['pollStatus']!='show'
     ) || (
-        Yii::$app->request->post()['nameOfPoll']        == $pollData['question_text']
+        Yii::$app->request->post()['nameOfPoll']        == $pollData['questionText']
         && Yii::$app->request->post()['pollStatus']     != 'show'
         && Yii::$app->request->post()['pollStatus']     == 'vote'
-        && \Yii::$app->user->getId() !== null
+        && Yii::$app->user->getId() !== null
     )) {
-        echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
-            echo Html::activeRadioList($model,'voice',$answers);
-            echo '<input type="hidden" name="question_text" value="'.$pollData['question_text'].'"/>';
+        echo Html::beginForm('#', 'post', ['class' => 'uk-width-medium-1-1 uk-form uk-form-horizontal']);
+        echo Html::activeRadioList($model, 'voice', $answers);
+        echo '<input type="hidden" name="questionText" value="' . $pollData['questionText'] . '"/>';
 
-            AjaxSubmitButton::begin([
-                'label' => 'Vote',
-                'ajaxOptions' => [
-                    'success' => (($ajaxSuccess) ?: new \yii\web\JsExpression('function(data){ $("body").html(data); }')),
-                    'type'    => 'POST',
-                    'url'     => '#',
-                ],
-                'options' => ['class' => 'customclass', 'type' => 'submit'],
-            ]);
-            AjaxSubmitButton::end();
+        AjaxSubmitButton::begin([
+            'label'       => 'Vote',
+            'ajaxOptions' => [
+                'success' => (($ajaxSuccess) ?: new \yii\web\JsExpression('function(data){ $("body").html(data); }')),
+                'type'    => 'POST',
+                'url'     => '#',
+            ],
+            'options'     => ['class' => 'customclass', 'type' => 'submit'],
+        ]);
+        AjaxSubmitButton::end();
         echo Html::endForm();
     }
 
@@ -129,14 +129,14 @@ use davidjeddy\poll\AjaxSubmitButton;
         && Yii::$app->request->post()['pollStatus'] != 'show'
     ) || (
         Yii::$app->request->post()['pollStatus']        != 'show'
-        && \Yii::$app->user->getId() === null
+        && Yii::$app->user->getId() === null
     ) || (
-        Yii::$app->request->post()['nameOfPoll']    == $pollData['question_text']
+        Yii::$app->request->post()['nameOfPoll']    == $pollData['questionText']
         && Yii::$app->request->post()['pollStatus'] != 'show')
         && Yii::$app->request->post()['pollStatus'] == 'vote'
     ){ ?>
         <form method="POST" action="" class="support_forms">
-        <input type="hidden" name="nameOfPoll" value="<?=$pollData['question_text']?>"/>
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['questionText']?>"/>
         <input type="hidden" name="pollStatus" value="show"/>
         <?php
         AjaxSubmitButton::begin([
@@ -156,7 +156,7 @@ use davidjeddy\poll\AjaxSubmitButton;
 
     //
     if ($isVote == true
-        || (Yii::$app->request->post()['nameOfPoll']==$pollData['question_text'] && Yii::$app->request->post()['pollStatus']=='show')
+        || (Yii::$app->request->post()['nameOfPoll']==$pollData['questionText'] && Yii::$app->request->post()['pollStatus']=='show')
     ) {
         $answerCount = count($answersData);
         for ($i = 0; $i < $answerCount; $i++) {
@@ -195,7 +195,7 @@ use davidjeddy\poll\AjaxSubmitButton;
         && Yii::$app->request->post()['pollStatus']=='show'
     ){ ?>
         <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
-        <input type="hidden" name="nameOfPoll" value="<?=$pollData['question_text']?>"/>
+        <input type="hidden" name="nameOfPoll" value="<?=$pollData['questionText']?>"/>
         <input type="hidden" name="pollStatus" value="vote"/>
         <?php
             AjaxSubmitButton::begin([
