@@ -6,7 +6,7 @@ use yii;
 use yii\base\Widget;
 
 /**
- * Class Poll
+ * Class Yii2Poll
  *
  * @package davidjeddy\yii2poll
  */

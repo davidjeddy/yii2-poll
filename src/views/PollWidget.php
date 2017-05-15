@@ -1,6 +1,6 @@
 <?php
 
-namespace davidjeddy\poll;
+namespace davidjeddy\yii2poll;
 
 use \Yii;
 use yii\base\Widget;
@@ -10,7 +10,7 @@ use yii\base\Widget;
  *
  * @author David J Eddy <me@davidjeddy.com>
  *
- * @package davidjeddy\poll
+ * @package davidjeddy\yii2poll
  */
 class PollWidget extends Widget
 {

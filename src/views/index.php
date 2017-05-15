@@ -1,8 +1,16 @@
 <?php
-use davidjeddy\yii2poll\AjaxSubmitButton;
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+
+use davidjeddy\yii2poll\AjaxSubmitButton;
+
+/* @var $isVote */
+/* @var $model */
+/* @var $answers */
+/* @var $ajaxSuccess */
+/* @var $sumOfVoices */
+/* @var $answersData */
+/* @var $pollData */
 
 ?>
 
@@ -74,13 +82,13 @@ use yii\widgets\ActiveForm;
 
     //
     if ((
-        $_POST['pollStatus']        !='show'
-        && $isVote                  == false
-        && Yii::$app->user->getId() ==null
+        \yii::$app->request->post('pollStatus') != 'show'
+        && $isVote                   == false
+        && Yii::$app->user->getId()  == null
     ) || (
-        $_POST['nameOfPoll']        == $pollData['poll_name']
-        && $_POST['pollStatus']     != 'show'
-        && $_POST['pollStatus']     == 'vote'
+        \yii::$app->request->post('nameOfPoll')     == $pollData['poll_name']
+        && \yii::$app->request->post('pollStatus')  != 'show'
+        && \yii::$app->request->post('pollStatus')  == 'vote'
         && Yii::$app->user->getId() === null
     )) {
         echo "Sign in to vote";
@@ -91,16 +99,16 @@ use yii\widgets\ActiveForm;
     // Init poll VW. No answer submitted / found in DB
     if ((
         $isVote == false
-        && Yii::$app->user->getId()!=null
-        && $_POST['pollStatus']!='show'
+        && Yii::$app->user->getId() != null
+        && \yii::$app->request->post('pollStatus') !== 'show'
     ) || (
-        $_POST['nameOfPoll']        == $pollData['poll_name']
-        && $_POST['pollStatus']     != 'show'
-        && $_POST['pollStatus']     == 'vote'
+        \yii::$app->request->post('nameOfPoll')     == $pollData['poll_name']
+        && \yii::$app->request->post('pollStatus')  != 'show'
+        && \yii::$app->request->post('pollStatus')  == 'vote'
         && Yii::$app->user->getId() !== null
     )) {
         echo Html::beginForm('#', 'post', ['class'=>'uk-width-medium-1-1 uk-form uk-form-horizontal']);
-            echo Html::activeRadioList($model,'voice',$answers);
+            echo Html::activeRadioList($model, 'voice', $answers);
             echo '<input type="hidden" name="poll_name" value="'.$pollData['poll_name'].'"/>';
 
             AjaxSubmitButton::begin([
@@ -121,14 +129,14 @@ use yii\widgets\ActiveForm;
     //
     if ((
         $isVote                 == false
-        && $_POST['pollStatus'] != 'show'
+        && \yii::$app->request->post('pollStatus')  != 'show'
     ) || (
-        $_POST['pollStatus']        != 'show'
+        \yii::$app->request->post('pollStatus')     != 'show'
         && Yii::$app->user->getId() === null
     ) || (
-        $_POST['nameOfPoll']    == $pollData['poll_name']
-        && $_POST['pollStatus'] != 'show')
-        && $_POST['pollStatus'] == 'vote'
+        \yii::$app->request->post('nameOfPoll')    == $pollData['poll_name']
+        && \yii::$app->request->post('pollStatus') != 'show')
+        && \yii::$app->request->post('pollStatus') == 'vote'
     ){ ?>
         <form method="POST" action="" class="support_forms">
         <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
@@ -151,11 +159,11 @@ use yii\widgets\ActiveForm;
 
     //
     if ($isVote == true
-        || ($_POST['nameOfPoll']==$pollData['poll_name'] && $_POST['pollStatus']=='show')
+        || (\yii::$app->request->post('nameOfPoll') == $pollData['poll_name'] && \yii::$app->request->post('pollStatus') == 'show')
     ) {
         for ($i = 0; $i<count($answersData); $i++) {
             $voicesPer = 0;
-            if($sumOfVoices==0){
+            if($sumOfVoices == 0){
                 $voicesPer = 0;
             } else {
                 $voicesPer = round($answersData[$i]['value']/$sumOfVoices, 4);
@@ -186,7 +194,7 @@ use yii\widgets\ActiveForm;
     //
     if (
         $isVote == false
-        && $_POST['pollStatus']=='show'
+        && \yii::$app->request->post('pollStatus') == 'show'
     ){ ?>
         <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
         <input type="hidden" name="nameOfPoll" value="<?=$pollData['poll_name']?>"/>
