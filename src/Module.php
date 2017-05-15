@@ -127,12 +127,9 @@ class Module extends Widget
     {
         parent::init();
 
-        $pollDB = new PollDb;
+        $pollDB = new PollResponse;
         $this->isExist = $pollDB->isTableExists();
 
-        if (count($this->isExist) == false) {
-            $pollDB->createTables();
-        }
         if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
         }

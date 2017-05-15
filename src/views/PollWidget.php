@@ -98,7 +98,7 @@ class PollWidget extends Widget
      */
     public function init()
     {
-        $this->pollDB = new PollDb;
+        $this->pollDB = new PollResponse;
 
         if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
