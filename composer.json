@@ -1,17 +1,4 @@
 {
-  "name": "davidjeddy/yii2-poll",
-  "description": "Widget to create custom polls for Yii 2.x framework.",
-  "keywords": [
-    "yii2",
-    "poll",
-    "widget"
-  ],
-  "type": "library",
-  "minimum-stability": "dev",
-  "license": "BSD-2-Clause",
-  "support": {
-    "source": "https://github.com/davidjeddy/yii2-poll"
-  },
   "authors": [
     {
       "name": "Sergey Dzhus",
@@ -19,15 +6,37 @@
     },
     {
       "name": "David J Eddy",
-      "email": "me@davidjeddy.com"
+      "email": "me@davidjeddy.com",
+      "homepage": "https://github.com/davidjeddy/yii2-freeradius-module",
+      "role": "Maintainer"
     }
   ],
-  "require": {
-    "yiisoft/yii2": "^2"
-  },
   "autoload": {
     "psr-4": {
-      "davidjeddy\\poll\\": "./src"
+      "davidjeddy\\yii2poll\\": "./src"
     }
-  }
+  },
+  "description": "Simple poll view widget for Yii2.",
+  "keywords": [
+    "yii2",
+    "framework",
+    "widget",
+    "poll"
+  ],
+  "license": "BSD-3-Clause",
+  "name": "davidjeddy/yii2-poll",
+  "require": {
+    "php": "^7",
+    "yiisoft/yii2": "^2"
+  },
+  "require-dev": {
+    "codeception/codeception": "^2",
+    "yiisoft/yii2-codeception": "^2",
+    "yiisoft/yii2-debug": "^2",
+    "yiisoft/yii2-faker": "^2"
+  },
+  "support": {
+    "source": "https://github.com/davidjeddy/yii2-poll"
+  },
+  "type": "widget"
 }

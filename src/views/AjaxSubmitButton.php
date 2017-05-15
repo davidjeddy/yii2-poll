@@ -1,18 +1,28 @@
 <?php
 
-namespace davidjeddy\poll;
+namespace davidjeddy\yii2poll;
 
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
- * AjaxSubmitButton renders an ajax button which is very similar to ajaxSubmitButton from \Yii1.
+ * AjaxSubmitButton renders an ajax button which is very similar to ajaxSubmitButton from Yii1.
  *
  * Example:
  *
  * ```php
  * <?= Html::beginForm(); ?>
+ * <?= Select2::widget([
+ *       'name' => 'country_code',
+ *       'data' => Country::getAllCountries(),
+ *       'options' => [
+ *           'id' => 'country_select',
+ *           'multiple' => false,
+ *           'placeholder' => 'Select country...',
+ *           'class' => 'uk-width-medium-7-10'
+ *       ]
+ *   ]);?>
  *
  * <?php
  * AjaxSubmitButton::begin([
@@ -32,17 +42,20 @@ use yii\helpers\Json;
  * <?= Html::endForm(); ?>
  * ```
  *
- * @author Oleg Martemjanov <demogorgorn@gmail.com>
- * @author David J Eddy <me@davidjeddy.com>
+ * @author Oleg Martemjanov <demogorgorn@gmail.com>, David J Eddy <me@davidjeddy.com>
  */
 class AjaxSubmitButton extends Widget
 {
     /**
+     * [$ajaxOptions description]
+     *
      * @var array
      */
     public $ajaxOptions = [];
 
     /**
+     * [$ajaxOverride description]
+     *
      * @var array
      */
     public $ajaxOverride = [];

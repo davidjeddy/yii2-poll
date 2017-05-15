@@ -1,39 +1,37 @@
-yii2-poll
-=========
+# yii2-poll
+Poll widget for Yii 2.x create basic custom poll(s) for authenticated users to vote on.
 
-## Badges
-[![Latest Stable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/stable)](https://packagist.org/packages/davidjeddy/yii2-poll)
-[![Total Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/downloads)](https://packagist.org/packages/davidjeddy/yii2-poll)
-[![Latest Unstable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/unstable)](https://packagist.org/packages/davidjeddy/yii2-poll)
-[![License](https://poser.pugx.org/davidjeddy/yii2-poll/license)](https://packagist.org/packages/davidjeddy/yii2-poll)
-[![Monthly Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/d/monthly)](https://packagist.org/packages/davidjeddy/yii2-poll)
-[![Daily Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/d/daily)](https://packagist.org/packages/davidjeddy/yii2-poll)
+# Installing
+- Run composer `require davidjeddy/yii2poll` on the terminal in your {project root},
+    - OR add `"davidjeddy/davidjeddyyii2poll": "~2"` to your projects composer.json in the "required": [...] section, then run `composer update`.
+- Run migration `php ./console/yii migrate/up --migrationPath=./vendor/davidjeddy/yii2-poll/migration/`
 
-## About
-Create a basic custom polls for Yii 2.x.
+# Usage
+Add to your applications configuration in the module section:
 
-Installing
-==========
+```PHP
+    [
+        'label'     => Yii::t('backend', 'Free Radius'),
+        'icon'      => '<i class="fa fa-id-card-o"></i>',
+        'url'       => ['/free-radius/default/index'],
+        'visible'   => Yii::$app->user->can('administrator')
+    ],
+```
 
-- Run composer `require davidjeddy/yii2-poll` on the terminal in your {project root}, OR add `"davidjeddy/yii2-poll": "~2"` to your projects composer.json in the "required": [...] section then run `composer update`.
-- Run migration via Yii's migration command providing `php ./console/yii migrate/up --migrationPath=./vendor/davidjeddy/yii2-poll/migrations`
-
-Usage
-=====
+Add the poll to a view file:
 
 Basic:
 ```PHP
-    echo \davidjeddy\poll\PollWidget::widget([
-        'questionText'      => \Yii::t('poll', 'Do you like PHP?'),
+    echo \davidjeddt\yii2poll\Poll::widget([
+        'pollName'      => 'Do you like PHP?',
         'answerOptions' => ['Yes', 'No'],
     ]);
 ```
 
-
 Advanced:
 ```PHP
-    echo \davidjeddy\poll\PollWidget::widget([
-        'questionText'      => \Yii::t('poll', 'Do you like PHP?'),
+    echo \davidjeddt\yii2poll\Poll::widget([
+        'pollName'      => 'Do you like PHP?',
         'answerOptions' => ['Yes', 'No'],
         'params'        => [
             'backgroundLinesColor' => '#DCDCDC',// html hex

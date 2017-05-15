@@ -1,15 +1,13 @@
 <?php
 
-namespace davidjeddy\poll;
+namespace davidjeddy\yii2poll;
 
 use yii\base\Model;
 
 /**
  * Class VoicesOfPoll
  *
- * @author David J Eddy <me@davidjeddy.com>
- *
- * @package davidjeddy\poll
+ * @package davidjeddy\yii2poll
  */
 class VoicesOfPoll extends Model
 {
@@ -26,12 +24,8 @@ class VoicesOfPoll extends Model
     /**
      * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels() : araay
     {
-        return [
-            'voice' => '',
-            'type'  => ''
-
-        ];
+        return ['voice' => '', 'type'  => ''];
     }
 }

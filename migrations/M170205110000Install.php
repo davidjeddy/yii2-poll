@@ -1,10 +1,12 @@
 <?php
 
-use common\models\User;
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m170205110000Install extends Migration
+/**
+ * Class M170205110000Install
+ */
+class M170205110000Install extends Migration
 {
     /**
      *

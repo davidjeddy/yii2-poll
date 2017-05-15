@@ -1,10 +1,12 @@
 <?php
 
-use common\models\User;
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m170205110001DemoPoll extends Migration
+/**
+ * Class MPollDemoDataMigration
+ */
+class MPollDemoDataMigration extends Migration
 {
     /**
      *
