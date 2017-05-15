@@ -10,7 +10,7 @@ use yii\base\Widget;
  *
  * @package davidjeddy\yii2poll
  */
-class Poll extends Widget
+class Module extends Widget
 {
     /**
      * @var array
@@ -130,16 +130,11 @@ class Poll extends Widget
         $pollDB = new PollDb;
         $this->isExist = $pollDB->isTableExists();
 
-        if (count($this->isExist) == 0) {
+        if (count($this->isExist) == false) {
             $pollDB->createTables();
         }
         if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
-        }
-
-        // crate DB TBOs if they do not exist for this poll
-        if (!$pollDB->isPollExist($this->pollName)) {
-            $this->setDbData();
         }
 
         // check that all Poll answers exist

@@ -14,32 +14,16 @@ use yii;
 class PollDb
 {
     /**
-     * @param $pollName
-     *
-     * @return bool
-     */
-    public function isPollExist(string $pollName) : boolean
-    {
-        $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $pollName);
-
-        $pollData = $command->queryOne();
-
-        return (empty($pollData) ? true : false);
-    }
-
-    /**
      * poll_response table logic
      *
      * ADDS new answers dynamically.
      * REMOVES answers that are not part of $pollObj->answerOptionsData
      *
-     * @param Poll $pollObj
+     * @param Module $pollObj
      *
      * @return yii\db\Query
      */
-    public function pollAnswerOptions(\davidjeddy\yii2poll\Poll $pollObj) : \yii\db\Query
+    public function pollAnswerOptions(\davidjeddy\yii2poll\Module $pollObj) : \yii\db\Query
     {
         $db = Yii::$app->db;
 
