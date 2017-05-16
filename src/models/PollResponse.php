@@ -1,6 +1,6 @@
 <?php
 
-namespace davidjeddy\yii2poll;
+namespace davidjeddy\yii2poll\models;
 
 use yii;
 

@@ -114,12 +114,12 @@ class PollWidget extends Widget
 
         if (\Yii::$app->request->isAjax) {
 
-            if ($_POST['questionText'] === $this->questionText
-                && isset($_POST['VoicesOfPoll']['voice'])
+            if (\Yii::$app->request->post('VoicesOfPoll')['questionText'] === $this->questionText
+                && isset(\Yii::$app->request->post('VoicesOfPoll')['voice'])
             ) {
                 $this->pollDB->updateAnswers(
                     $this->questionText,
-                    $_POST['VoicesOfPoll']['voice'],
+                    \Yii::$app->request->post('VoicesOfPoll')['voice'],
                     $this->answerOptions
                 );
 

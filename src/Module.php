@@ -4,6 +4,7 @@ namespace davidjeddy\yii2poll;
 
 use yii;
 use yii\base\Widget;
+use \davidjeddy\yii2poll\models\PollResponse;
 
 /**
  * Class Yii2Poll
