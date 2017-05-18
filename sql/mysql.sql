@@ -24,13 +24,13 @@ DROP TABLE IF EXISTS `poll_question`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `poll_name` varchar(128) NOT NULL,
+  `question_text` varchar(128) NOT NULL,
   `answer_options` text NOT NULL,
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `poll_name` (`poll_name`)
+  KEY `question_text` (`question_text`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -40,7 +40,7 @@ CREATE TABLE `poll_question` (
 
 LOCK TABLES `poll_question` WRITE;
 /*!40000 ALTER TABLE `poll_question` DISABLE KEYS */;
-INSERT INTO `poll_question` (`id`, `poll_name`, `answer_options`, `created_at`, `updated_at`, `deleted_at`) VALUES (1,'Poll 1','a:2:{i:0;s:3:\"Yes\";i:1;s:2:\"No\";}',0,1437495010,NULL),(2,'Poll 2','a:4:{i:0;s:3:\"Foo\";i:1;s:3:\"Bar\";i:2;s:8:\"hello...\";i:3;s:18:\"~!@#$%^&*()_+world\";}',0,1437495010,NULL),(3,'Poll 3','a:4:{i:0;s:8:\"option 1\";i:1;s:8:\"option 2\";i:2;s:8:\"option 3\";i:3;s:8:\"option 4\";}',0,NULL,NULL),(4,'Poll 4','a:6:{i:0;s:4:\"qwer\";i:1;s:4:\"asdf\";i:2;s:4:\"zxcv\";i:3;s:3:\"rty\";i:4;s:3:\"dfg\";i:5;s:3:\"cvb\";}',0,NULL,NULL),(5,'Poll 5','a:2:{i:0;s:4:\"qwer\";i:1;s:4:\"zxcv\";}',0,NULL,NULL);
+INSERT INTO `poll_question` (`id`, `question_text`, `answer_options`, `created_at`, `updated_at`, `deleted_at`) VALUES (1,'Poll 1','a:2:{i:0;s:3:\"Yes\";i:1;s:2:\"No\";}',0,1437495010,NULL),(2,'Poll 2','a:4:{i:0;s:3:\"Foo\";i:1;s:3:\"Bar\";i:2;s:8:\"hello...\";i:3;s:18:\"~!@#$%^&*()_+world\";}',0,1437495010,NULL),(3,'Poll 3','a:4:{i:0;s:8:\"option 1\";i:1;s:8:\"option 2\";i:2;s:8:\"option 3\";i:3;s:8:\"option 4\";}',0,NULL,NULL),(4,'Poll 4','a:6:{i:0;s:4:\"qwer\";i:1;s:4:\"asdf\";i:2;s:4:\"zxcv\";i:3;s:3:\"rty\";i:4;s:3:\"dfg\";i:5;s:3:\"cvb\";}',0,NULL,NULL),(5,'Poll 5','a:2:{i:0;s:4:\"qwer\";i:1;s:4:\"zxcv\";}',0,NULL,NULL);
 /*!40000 ALTER TABLE `poll_question` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -83,14 +83,14 @@ DROP TABLE IF EXISTS `poll_response`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_response` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `poll_name` varchar(128) NOT NULL,
+  `question_text` varchar(128) NOT NULL,
   `answers` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
   `value` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) DEFAULT NULL,
   `deleted_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_poll_question_id_idx` (`poll_name`)
+  KEY `fk_poll_question_id_idx` (`question_text`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

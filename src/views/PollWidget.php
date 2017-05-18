@@ -98,7 +98,7 @@ class PollWidget extends Widget
      */
     public function init()
     {
-        $this->pollDB = new PollResponse;
+        $this->pollDB = new \davidjeddy\yii2poll\models\PollResponse;
 
         if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
@@ -145,11 +145,7 @@ class PollWidget extends Widget
      */
     public function run()
     {
-        if ($this->pollDB->doTablesExist() < 3) {
-            return false;
-        }
-
-        $model = new VoicesOfPoll;
+        $model = new \davidjeddy\yii2poll\models\VoicesOfPoll;
 
         return $this->render('index', [
             'ajaxSuccess' => $this->ajaxSuccess,

@@ -31,11 +31,6 @@ class Module extends Widget
     /**
      * @var
      */
-    public $isExist;
-
-    /**
-     * @var
-     */
     public $isVote;
 
     /**
@@ -56,7 +51,7 @@ class Module extends Widget
     /**
      * @var string
      */
-    public $pollName = '';
+    public $questionText = '';
 
     /**
      * @var int
@@ -73,9 +68,9 @@ class Module extends Widget
      *
      * @return string
      */
-    public function setPollName(string $name) : string
+    public function setQuestionText(string $name) : string
     {
-        $this->pollName = $name;
+        $this->questionText = $name;
     }
 
     /**
@@ -85,8 +80,8 @@ class Module extends Widget
     {
         $db = Yii::$app->db;
 
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $this->pollName);
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
+            ->bindParam(':questionText', $this->questionText);
 
         $this->pollData = $command->queryOne();
         $this->answerOptionsData = unserialize($this->pollData['answer_options']);
@@ -99,7 +94,7 @@ class Module extends Widget
     {
         return Yii::$app->db->createCommand()->insert('poll_question', [
             'answer_options' => $this->answerOptionsData,
-            'poll_name'      => $this->pollName,
+            'question_text'      => $this->questionText,
         ])->execute();
     }
 
@@ -129,7 +124,6 @@ class Module extends Widget
         parent::init();
 
         $pollDB = new PollResponse;
-        $this->isExist = $pollDB->isTableExists();
 
         if ($this->answerOptions !== null) {
             $this->answerOptionsData = serialize($this->answerOptions);
@@ -139,27 +133,29 @@ class Module extends Widget
         $pollDB->pollAnswerOptions($this);
 
         if (Yii::$app->request->isAjax) {
-            if (isset($_POST['VoicesOfPoll'])) {
-                if ($_POST['poll_name'] == $this->pollName && isset($_POST['VoicesOfPoll']['voice'])) {
+            if (!empty(\Yii::$app->request->post('VoicesOfPoll'))) {
+                if (\Yii::$app->request->post('question_text') == $this->questionText
+                    && !empty(\Yii::$app->request->post('VoicesOfPoll')['voice'])
+                ) {
                     $pollDB->updateAnswers(
-                        $this->pollName,
-                        $_POST['VoicesOfPoll']['voice'],
+                        $this->questionText,
+                        \Yii::$app->request->post('VoicesOfPoll')['voice'],
                         $this->answerOptions
                     );
 
-                    $pollDB->updateUsers($this->pollName);
+                    $pollDB->updateUsers($this->questionText);
                 }
             }
         }
         $this->getDbData();
-        $this->answers = $pollDB->getVoicesData($this->pollName);
+        $this->answers = $pollDB->getVoicesData($this->questionText);
 
         for ($i = 0; $i < count($this->answers); $i++) {
 
             $this->sumOfVoices = $this->sumOfVoices + $this->answers[$i]['value'];
         }
 
-        $this->isVote = $pollDB->isVote($this->pollName);
+        $this->isVote = $pollDB->isVote($this->questionText);
     }
 
     /**
@@ -172,7 +168,7 @@ class Module extends Widget
             'answers'     => $this->answerOptions,
             'answersData' => $this->answers,
             'isVote'      => $this->isVote,
-            'model'       => new VoicesOfPoll,
+            'model'       => new \davidjeddy\yii2poll\models\VoicesOfPoll(),
             'params'      => $this->params,
             'pollData'    => $this->pollData,
             'sumOfVoices' => $this->sumOfVoices,

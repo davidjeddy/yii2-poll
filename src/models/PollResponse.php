@@ -17,11 +17,11 @@ class PollResponse
      * ADDS new answers dynamically.
      * REMOVES answers that are not part of $pollObj->answerOptionsData
      *
-     * @param Module $pollObj
+     * @param \davidjeddy\yii2poll\Module $pollObj
      *
-     * @return yii\db\Query
+     * @return int
      */
-    public function pollAnswerOptions(\davidjeddy\yii2poll\Module $pollObj) : \yii\db\Query
+    public function pollAnswerOptions(\davidjeddy\yii2poll\Module $pollObj) : int
     {
         $db = Yii::$app->db;
 
@@ -30,71 +30,76 @@ class PollResponse
             $answer = (new \yii\db\Query())
                 ->select(['answers'])
                 ->from('poll_response')
-                ->andWhere(['poll_name' => $pollObj->pollName])
-                ->andWhere(['answers' => $value])
+                ->andWhere(['question_text' => $pollObj->questionText])
+                ->andWhere(['answers'       => $value])
                 ->one();
 
             if (!$answer) {
                 $db->createCommand()->insert('poll_response', [
-                    'answers'   => $value,
-                    'poll_name' => $pollObj->pollName,
-                    'value'     => 0,
+                    'answers'       => $value,
+                    'question_text' => $pollObj->questionText,
+                    'value'         => 0,
+                    'created_at'    => time()
                 ])->execute();
             }
         }
 
         // remove answers that are no longer a part of the poll answer_options
         // source http://stackoverflow.com/questions/31672033/how-do-i-delete-rows-in-yii2
-        return (new \yii\db\Query())
-            ->createCommand()
-            ->delete('poll_response')
-            ->where(['poll_name' => $pollObj->pollName])
-            ->where(['NOT IN', 'answers', implode($pollObj->answerOptions, "', '")])
+        // DELETE FROM `poll_response` WHERE question_text = 'Do you like PHP?' AND answers NOT IN ('Yes, No');
+        return $db->createCommand()
+            ->delete('poll_response',
+                'question_text = :question_text AND answers NOT IN (:answerOptions)',
+                [
+                    ':question_text'=> $pollObj->questionText,
+                    ':answerOptions'=> implode(', ', $pollObj->answerOptions)
+                ]
+            )
             ->execute();
     }
 
     /**
-     * @param string $pollName
+     * @param string $questionText
      *
      * @return array
      */
-    public function getVoicesData(string $pollName)
+    public function getVoicesData(string $questionText)
     {
         $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_response WHERE poll_name=:pollName')->
-        bindParam(':pollName', $pollName);
+        $command = $db->createCommand('SELECT * FROM poll_response WHERE question_text=:questionText')->
+        bindParam(':questionText', $questionText);
         $voicesData = $command->queryAll();
 
         return $voicesData;
     }
 
     /**
-     * @param string $pollName
+     * @param string $questionText
      * @param integer $voice
      * @param array  $answerOptions
      *
      * @return yii\db\Query
      */
-    public function updateAnswers(string $pollName, integer $voice, array $answerOptions) : \yii\db\Query
+    public function updateAnswers(string $questionText, integer $voice, array $answerOptions) : \yii\db\Query
     {
 
         return Yii::$app->db->createCommand("
             UPDATE poll_response
             SET value = value +1  
-            WHERE poll_name = '$pollName'
+            WHERE question_text = '$questionText'
                 AND answers = '$answerOptions[$voice]'")
             ->execute();
 
     }
 
     /**
-     * @param string $pollName
+     * @param string $questionText
      */
-    public function updateUsers(string $pollName)
+    public function updateUsers(string $questionText)
     {
         $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $pollName);
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
+            ->bindParam(':questionText', $questionText);
 
 
         if (Yii::$app->user->getId() === null) {
@@ -112,15 +117,15 @@ class PollResponse
     }
 
     /**
-     * @param string $pollName
+     * @param string $questionText
      *
      * @return array|false
      */
-    public function isVote(string $pollName)
+    public function isVote(string $questionText)
     {
         $db = Yii::$app->db;
-        $command = $db->createCommand('SELECT * FROM poll_question WHERE poll_name=:pollName')
-            ->bindParam(':pollName', $pollName);
+        $command = $db->createCommand('SELECT * FROM poll_question WHERE question_text=:questionText')
+            ->bindParam(':questionText', $questionText);
         $pollData = $command->queryOne();
 
         if (Yii::$app->user->getId() === null) {

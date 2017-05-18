@@ -48,7 +48,7 @@ Add the poll to a view file:
 Basic:
 ```PHP
     echo \davidjeddy\yii2poll\Poll::widget([
-        'pollName'      => 'Do you like PHP?',
+        'questionText'  => 'Do you like PHP?',
         'answerOptions' => ['Yes', 'No'],
     ]);
 ```
@@ -56,7 +56,7 @@ Basic:
 Advanced:
 ```PHP
     echo \davidjeddy\yii2poll\Poll::widget([
-        'pollName'      => 'Do you like PHP?',
+        'questionText'      => 'Do you like PHP?',
         'answerOptions' => ['Yes', 'No'],
         'params'        => [
             'backgroundLinesColor' => '#DCDCDC',// html hex
