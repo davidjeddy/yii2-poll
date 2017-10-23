@@ -4,7 +4,7 @@ use common\models\User;
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m170205110000Install extends Migration
+class M170205110000Install extends Migration
 {
     /**
      *

@@ -81,7 +81,7 @@ use davidjeddy\poll\AjaxSubmitButton;
     if ((
         Yii::$app->request->post()['pollStatus']        !='show'
         && $isVote                  === false
-        && Yii::$app->user->getId() ==null
+        && Yii::$app->user->getId() === null
     ) || (
         Yii::$app->request->post()['nameOfPoll']        == $pollData['questionText']
         && Yii::$app->request->post()['pollStatus']     != 'show'

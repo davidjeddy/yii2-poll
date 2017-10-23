@@ -41,7 +41,7 @@ class PollDb
     {
         $returnData = null;
 
-//        try {
+        try {
             $db = Yii::$app->db;
 
             foreach ($pollObj->answerOptions as $key => $value) {
@@ -65,17 +65,18 @@ class PollDb
 
             // remove answers that are no longer a part of the poll answer_options
             // source http://stackoverflow.com/questions/31672033/how-do-i-delete-rows-in-yii2
-            $answerString =  '("' . implode('", "', $pollObj->answerOptions) . '")';
+            $param1 =  '("' . implode('", "', $pollObj->answerOptions) . '")';
             $model = $db->createCommand('
               DELETE FROM poll_response
               WHERE question_text = :question_text
-                AND answers NOT IN ' .  $answerString);
+                AND answers NOT IN ' . $param1)
+                ->bindParam(':param1', $param1);
             $model->bindParam(':question_text', $pollObj->questionText);
             $model->execute();
 
-//        } catch (\Exception $e) {
-//            throw new $e('Unable to get poll question\'s answers.');
-//        }
+        } catch (\Exception $e) {
+            throw new $e('Unable to get poll question\'s answers.');
+        }
 
         return $returnData;
     }

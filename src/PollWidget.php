@@ -84,7 +84,6 @@ class PollWidget extends Widget
 
     /**
      * @param $param
-     *
      * @return mixed
      */
     public function getParams($param)
@@ -94,7 +93,7 @@ class PollWidget extends Widget
     }
 
     /**
-     *
+     * @return mixed
      */
     public function init()
     {
@@ -141,7 +140,7 @@ class PollWidget extends Widget
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function run()
     {
