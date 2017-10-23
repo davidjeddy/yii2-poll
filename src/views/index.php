@@ -96,7 +96,7 @@ use davidjeddy\poll\AjaxSubmitButton;
     // Init poll VW. No answer submitted / found in DB
     if ((
         $isVote === false
-        && Yii::$app->user->getId()!=null
+        && Yii::$app->user->getId()!== null
         && Yii::$app->request->post()['pollStatus']!='show'
     ) || (
         Yii::$app->request->post()['nameOfPoll']        == $pollData['questionText']

@@ -158,8 +158,9 @@ class PollDb
         $command = $db->createCommand('
                 SELECT *
                 FROM  poll_user 
-                WHERE user_id = ' . $this->getUserId() . '
+                WHERE user_id = :userId
                 AND poll_id = :pollId')
+            ->bindPara(':userId', $this->getUserId())
             ->bindParam(':pollId', $pollData['id']);
 
         if ($command->queryOne()) {
