@@ -33,9 +33,8 @@ class PollDb
      * ADDS new answers dynamically.
      * REMOVES answers that are not part of $pollObj->answerOptionsData
      *
-     * @param  [type] $pollObj [description]
-     *
-     * @return [type]          [description]
+     * @param PollWidget $pollObj
+     * @return null
      */
     public function pollAnswerOptions(\davidjeddy\poll\PollWidget $pollObj)
     {
@@ -65,13 +64,13 @@ class PollDb
 
             // remove answers that are no longer a part of the poll answer_options
             // source http://stackoverflow.com/questions/31672033/how-do-i-delete-rows-in-yii2
-            $param1 =  '("' . implode('", "', $pollObj->answerOptions) . '")';
+            $answerText =  '("' . implode('", "', $pollObj->answerOptions) . '")';
             $model = $db->createCommand('
               DELETE FROM poll_response
               WHERE question_text = :question_text
-                AND answers NOT IN ' . $param1)
-                ->bindParam(':param1', $param1);
+                AND answers NOT IN :answer_text');
             $model->bindParam(':question_text', $pollObj->questionText);
+            $model->bindParam(':answer_text', $answerText);
             $model->execute();
 
         } catch (\Exception $e) {

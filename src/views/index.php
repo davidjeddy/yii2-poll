@@ -95,7 +95,7 @@ use davidjeddy\poll\AjaxSubmitButton;
 
     // Init poll VW. No answer submitted / found in DB
     if ((
-        $isVote == false
+        $isVote === false
         && Yii::$app->user->getId()!=null
         && Yii::$app->request->post()['pollStatus']!='show'
     ) || (
@@ -125,7 +125,7 @@ use davidjeddy\poll\AjaxSubmitButton;
 
     //
     if ((
-        $isVote                 == false
+        $isVote === false
         && Yii::$app->request->post()['pollStatus'] != 'show'
     ) || (
         Yii::$app->request->post()['pollStatus']        != 'show'
@@ -155,7 +155,7 @@ use davidjeddy\poll\AjaxSubmitButton;
 
 
     //
-    if ($isVote == true
+    if ($isVote === true
         || (Yii::$app->request->post()['nameOfPoll']==$pollData['questionText'] && Yii::$app->request->post()['pollStatus']=='show')
     ) {
         $answerCount = count($answersData);
@@ -183,7 +183,7 @@ use davidjeddy\poll\AjaxSubmitButton;
 
 
     // show 'continue' button since the user has voted
-    if ($isVote == true) {
+    if ($isVote === true) {
         echo '<button type="submit" id="w0Continue" class="customclass" onClick="location.reload();">Continue</button>';
     }
 
@@ -191,7 +191,7 @@ use davidjeddy\poll\AjaxSubmitButton;
 
     //
     if (
-        $isVote == false
+        $isVote === false
         && Yii::$app->request->post()['pollStatus']=='show'
     ){ ?>
         <form method="POST" action="" class="support_forms" style="margin-top: -10px;">
