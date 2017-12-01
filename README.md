@@ -2,6 +2,7 @@ yii2-poll
 =========
 
 ## Badges
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/e45f66cb-8718-4dee-9597-d40b745aeb29mini.png)](https://insight.sensiolabs.com/projects/e45f66cb-8718-4dee-9597-d40b745aeb29)
 [![Latest Stable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/stable)](https://packagist.org/packages/davidjeddy/yii2-poll)
 [![Total Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/downloads)](https://packagist.org/packages/davidjeddy/yii2-poll)
 [![Latest Unstable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/unstable)](https://packagist.org/packages/davidjeddy/yii2-poll)
@@ -15,7 +16,8 @@ Create a basic custom polls for Yii 2.x.
 Installing
 ==========
 
-- Run composer `require davidjeddy/yii2-poll` on the terminal in your {project root}, OR add `"davidjeddy/yii2-poll": "~2"` to your projects composer.json in the "required": [...] section then run `composer update`.
+- Run `composer require davidjeddy/yii2-poll` on the terminal in your {project root}
+  - OR add `"davidjeddy/yii2-poll": "~2"` to your projects composer.json in the "required": [...] section then run `composer update`.
 - Run migration via Yii's migration command providing `php ./console/yii migrate/up --migrationPath=./vendor/davidjeddy/yii2-poll/migrations`
 
 Usage
