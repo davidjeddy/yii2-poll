@@ -26,7 +26,7 @@ Usage
 Basic:
 ```PHP
     echo \davidjeddy\poll\PollWidget::widget([
-        'questionText'      => \Yii::t('poll', 'Do you like PHP?'),
+        'questionText'  => \Yii::t('poll', 'Do you like PHP?'),
         'answerOptions' => ['Yes', 'No'],
     ]);
 ```
@@ -35,7 +35,7 @@ Basic:
 Advanced:
 ```PHP
     echo \davidjeddy\poll\PollWidget::widget([
-        'questionText'      => \Yii::t('poll', 'Do you like PHP?'),
+        'questionText'  => \Yii::t('poll', 'Do you like PHP?'),
         'answerOptions' => ['Yes', 'No'],
         'params'        => [
             'backgroundLinesColor' => '#DCDCDC',// html hex
