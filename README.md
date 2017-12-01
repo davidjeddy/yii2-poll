@@ -2,7 +2,7 @@ yii2-poll
 =========
 
 ## Badges
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/e45f66cb-8718-4dee-9597-d40b745aeb29mini.png)](https://insight.sensiolabs.com/projects/e45f66cb-8718-4dee-9597-d40b745aeb29)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/e45f66cb-8718-4dee-9597-d40b745aeb29/mini.png)](https://insight.sensiolabs.com/projects/e45f66cb-8718-4dee-9597-d40b745aeb29)
 [![Latest Stable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/stable)](https://packagist.org/packages/davidjeddy/yii2-poll)
 [![Total Downloads](https://poser.pugx.org/davidjeddy/yii2-poll/downloads)](https://packagist.org/packages/davidjeddy/yii2-poll)
 [![Latest Unstable Version](https://poser.pugx.org/davidjeddy/yii2-poll/v/unstable)](https://packagist.org/packages/davidjeddy/yii2-poll)
