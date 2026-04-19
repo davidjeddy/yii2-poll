@@ -1,0 +1,42 @@
+{
+  "authors": [
+    {
+      "name": "Sergey Dzhus",
+      "email": "Dzhus1111@gmail.com"
+    },
+    {
+      "name": "David J Eddy",
+      "email": "me@davidjeddy.com",
+      "homepage": "https://github.com/davidjeddy/yii2-freeradius-module",
+      "role": "Maintainer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "davidjeddy\\yii2poll\\": "./src"
+    }
+  },
+  "description": "Simple poll view widget for Yii2.",
+  "keywords": [
+    "yii2",
+    "framework",
+    "widget",
+    "poll"
+  ],
+  "license": "BSD-3-Clause",
+  "name": "davidjeddy/yii2-poll",
+  "require": {
+    "php": "^7",
+    "yiisoft/yii2": "^2"
+  },
+  "require-dev": {
+    "codeception/codeception": "^2",
+    "yiisoft/yii2-codeception": "^2",
+    "yiisoft/yii2-debug": "^2",
+    "yiisoft/yii2-faker": "^2"
+  },
+  "support": {
+    "source": "https://github.com/davidjeddy/yii2-poll"
+  },
+  "type": "widget"
+}
